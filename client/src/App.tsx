@@ -1,13 +1,16 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import AllRoutes from "./routes/Routes";
+import { AuthProvider } from "./context/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
     <>
       <Router>
-        <AllRoutes />
+        <AuthProvider>
+          <AllRoutes />
+        </AuthProvider>
       </Router>
     </>
   );

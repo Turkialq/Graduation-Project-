@@ -1,4 +1,11 @@
-import * as React from "react";
+import react, {
+  useState,
+  useEffect,
+  useContext,
+  ChangeEvent,
+  FormEvent,
+} from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -6,11 +13,27 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import AuthContext from "../context/AuthContext";
 
 export default function LoginScreen() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [button, setButton] = useState<boolean>(true);
+  const navigate = useNavigate();
+
+  const { loginUser, user }: any = useContext(AuthContext);
+
+  const handlePassword = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
   };
+
+  useEffect(() => {
+    if (email.length > 4 && password.length > 5 && email.includes("@")) {
+      setButton(false);
+    } else {
+      setButton(true);
+    }
+  }, [password, email]);
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -23,7 +46,7 @@ export default function LoginScreen() {
           backgroundImage: `url(${"/Users/turkialqahtani/Desktop/GP2/client/src/assets/background.jpg"})`,
         }}
       />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={20}>
         <Box
           sx={{
             my: 8,
@@ -39,7 +62,7 @@ export default function LoginScreen() {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={(e: FormEvent<HTMLFormElement>) => loginUser(e)}
             sx={{ mt: 1 }}
           >
             <TextField
@@ -47,6 +70,7 @@ export default function LoginScreen() {
               required
               fullWidth
               id="email"
+              value={email}
               label="اسم المستخدم"
               name="email"
               autoComplete="off"
@@ -56,6 +80,9 @@ export default function LoginScreen() {
                 inputProps: {
                   style: { textAlign: "right" },
                 },
+              }}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setEmail(e.target.value);
               }}
             />
             <TextField
@@ -72,9 +99,13 @@ export default function LoginScreen() {
                   style: { textAlign: "right" },
                 },
               }}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                handlePassword(e);
+              }}
             />
 
             <Button
+              disabled={button}
               type="submit"
               fullWidth
               variant="contained"
