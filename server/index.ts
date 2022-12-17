@@ -3,11 +3,13 @@ import { PrismaClient } from "@prisma/client";
 import path from "path";
 import cors from "cors";
 import fs from "fs";
+import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import bodyParser from "body-parser";
 
 const app: Application = express();
 const prisma = new PrismaClient();
+const userRouter = require("./routes/userAuth");
 
 dotenv.config();
 
@@ -18,6 +20,27 @@ app.use(
     origin: "http://localhost:3000",
   })
 );
+
+export const authenticateToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader?.split(" ")[1];
+  if (token == null) return res.sendStatus(404);
+  jwt.verify(
+    token,
+    process.env.ACESS_TOKEN_SECRET!,
+    (error: any, user: any) => {
+      if (error) return res.sendStatus(403);
+      req.body.user = user;
+      next();
+    }
+  );
+};
+
+app.use("/user", userRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from the back");
