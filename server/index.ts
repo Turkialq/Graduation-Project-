@@ -1,5 +1,4 @@
 import express, { Request, Response, NextFunction, Application } from "express";
-import { PrismaClient } from "@prisma/client";
 import path from "path";
 import cors from "cors";
 import fs from "fs";
@@ -8,7 +7,6 @@ import * as dotenv from "dotenv";
 import bodyParser from "body-parser";
 
 const app: Application = express();
-const prisma = new PrismaClient();
 const userRouter = require("./routes/userAuth");
 
 dotenv.config();
