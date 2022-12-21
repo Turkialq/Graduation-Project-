@@ -34,11 +34,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return () => clearInterval(interval);
   }, [authToken, loading]);
 
-  const registerUser = async (
+  const registerStudent = async (
     event: any,
     name: string,
     fatherName: string,
     familyName: string,
+    phoneNumber: string,
+    gpa: string,
     email: string,
     password: string,
     gender: string,
@@ -53,6 +55,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       name,
       fatherName,
       familyName,
+      phoneNumber,
+      gpa,
       email,
       password,
       gender,
@@ -61,6 +65,85 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       university,
     });
     console.log(JSON.parse(data));
+
+    // const headers = { "Content-Type": "application/json" };
+
+    // const response = await fetch(url, {
+    //   method: "POST",
+    //   headers: headers,
+    //   body: data,
+    // });
+
+    // if (response.status === 200) {
+    //   navigate("/");
+    // } else {
+    //   alert("something went wrong");
+    // }
+  };
+  const registerUniversitySupervisor = async (
+    event: any,
+    name: string,
+    familyName: string,
+    gender: string,
+    phoneNumber: string,
+    email: string,
+    password: string,
+    major: string,
+    university: string
+  ) => {
+    event.preventDefault();
+
+    const data = JSON.stringify({
+      name,
+      familyName,
+      phoneNumber,
+      email,
+      password,
+      gender,
+      major,
+      university,
+    });
+    console.log(JSON.parse(data));
+
+    const url =
+      "http://localhost:8080/user/register-student-supervisor-university";
+    const headers = { "Content-Type": "application/json" };
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: data,
+    });
+    if (response.status === 200) {
+      navigate("/");
+    } else {
+      alert("something went wrong");
+    }
+  };
+  const registerCompanySupervisor = async (
+    event: any,
+    name: string,
+    familyName: string,
+    gender: string,
+    phoneNumber: string,
+    email: string,
+    password: string,
+    company: string
+  ) => {
+    event.preventDefault();
+
+    const url = "http://localhost:8080/register";
+    const data = JSON.stringify({
+      name,
+      familyName,
+      phoneNumber,
+      email,
+      password,
+      gender,
+      company,
+    });
+    console.log(JSON.parse(data));
+
     // const headers = { "Content-Type": "application/json" };
 
     // const response = await fetch(url, {
@@ -150,7 +233,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     user: user,
     loginUser: loginUser,
     logout,
-    registerUser: registerUser,
+    registerStudent: registerStudent,
+    registerUniversitySupervisor: registerUniversitySupervisor,
+    registerCompanySupervisor: registerCompanySupervisor,
   };
 
   return (

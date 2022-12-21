@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { Grid, Paper, Avatar } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
@@ -18,17 +18,37 @@ export default function Signup() {
   const [name, setName] = useState<string>("");
   const [fatherName, setFatherName] = useState<string>("");
   const [familyName, setFamilyName] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<number | any>();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [gender, setGender] = useState<string>("");
-  const [button, setButton] = useState<boolean>(true);
+  const [gpa, setGpa] = useState<string>("");
   const [intrest, setIntrest] = useState<string>("");
   const [major, setMajor] = useState<string>("");
   const [university, setUniversity] = useState<string>("");
+  const [company, setCompany] = useState<string>("");
 
   const navigate = useNavigate();
 
-  const { registerUser }: any = useContext(AuthContext);
+  useEffect(() => {
+    setName("");
+    setFatherName("");
+    setFamilyName("");
+    setPhoneNumber(0);
+    setEmail("");
+    setPassword("");
+    setGender("");
+    setIntrest("");
+    setMajor("");
+    setCompany("");
+    setUniversity("");
+  }, [role]);
+
+  const {
+    registerStudent,
+    registerUniversitySupervisor,
+    registerCompanySupervisor,
+  }: any = useContext(AuthContext);
 
   const handleIntrest = (event: SelectChangeEvent) => {
     setIntrest(event.target.value as string);
@@ -41,21 +61,58 @@ export default function Signup() {
   const handleUniversity = (event: SelectChangeEvent) => {
     setUniversity(event.target.value as string);
   };
+  const handleCompany = (event: SelectChangeEvent) => {
+    setCompany(event.target.value as string);
+  };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    registerUser(
-      event,
-      name,
-      fatherName,
-      familyName,
-      email,
-      password,
-      gender,
-      intrest,
-      major,
-      university
-    );
+    switch (role) {
+      case "student":
+        registerStudent(
+          event,
+          name,
+          fatherName,
+          familyName,
+          phoneNumber,
+          gpa,
+          email,
+          password,
+          gender,
+          intrest,
+          major,
+          university
+        );
+        break;
+      case "uniSupervisor":
+        registerUniversitySupervisor(
+          event,
+          name,
+          familyName,
+          gender,
+          phoneNumber,
+          email,
+          password,
+          major,
+          university
+        );
+        break;
+      case "companySupervisor":
+        registerCompanySupervisor(
+          event,
+          name,
+          familyName,
+          gender,
+          phoneNumber,
+          email,
+          password,
+          company
+        );
+        break;
+
+      default:
+        break;
+    }
   };
 
   const ITEM_HEIGHT = 48;
@@ -90,7 +147,9 @@ export default function Signup() {
             component="fieldset"
             style={{ marginTop: 10, textAlign: "right", width: "100%" }}
           >
-            <FormLabel component="legend">مهنة</FormLabel>
+            <FormLabel component="legend" color="primary">
+              مهنة
+            </FormLabel>
             <RadioGroup
               name="role"
               style={{ display: "initial" }}
@@ -100,7 +159,7 @@ export default function Signup() {
             >
               <FormControlLabel
                 value="student"
-                control={<Radio />}
+                control={<Radio color="secondary" />}
                 label="طالب"
               />
               <FormControlLabel
@@ -111,12 +170,12 @@ export default function Signup() {
               <FormControlLabel
                 value="companySupervisor"
                 control={<Radio />}
-                label="مسؤل بئة العمل"
+                label="مسؤل بيئة العمل "
               />
             </RadioGroup>
           </FormControl>
-
           <TextField
+            value={name}
             margin="normal"
             required
             fullWidth
@@ -135,9 +194,9 @@ export default function Signup() {
               setName(e.target.value);
             }}
           />
-
           {role === "student" && (
             <TextField
+              value={fatherName}
               margin="normal"
               required
               fullWidth
@@ -157,6 +216,7 @@ export default function Signup() {
             />
           )}
           <TextField
+            value={familyName}
             margin="normal"
             required
             fullWidth
@@ -195,7 +255,30 @@ export default function Signup() {
               <FormControlLabel value="male" control={<Radio />} label="ذكر" />
             </RadioGroup>
           </FormControl>
+          {role === "student" && (
+            <TextField
+              value={gpa}
+              margin="normal"
+              required
+              fullWidth
+              label="معدل التراكمي"
+              autoComplete="off"
+              autoFocus
+              placeholder="من ٥"
+              color="success"
+              InputProps={{
+                inputProps: {
+                  style: { textAlign: "right" },
+                },
+              }}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                setGpa(e.target.value);
+              }}
+            />
+          )}
           <TextField
+            value={phoneNumber}
+            type="number"
             margin="normal"
             required
             fullWidth
@@ -209,8 +292,13 @@ export default function Signup() {
                 style: { textAlign: "right" },
               },
             }}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setPhoneNumber(e.target.value);
+            }}
           />
+
           <TextField
+            value={email}
             margin="normal"
             required
             fullWidth
@@ -224,8 +312,12 @@ export default function Signup() {
                 style: { textAlign: "right" },
               },
             }}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setEmail(e.target.value);
+            }}
           />
           <TextField
+            value={password}
             margin="normal"
             required
             fullWidth
@@ -239,6 +331,9 @@ export default function Signup() {
               inputProps: {
                 style: { textAlign: "right" },
               },
+            }}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setPassword(e.target.value);
             }}
           />
           {role === "student" && (
@@ -271,7 +366,7 @@ export default function Signup() {
               </Select>
             </>
           )}
-          {role === "student" && (
+          {(role === "student" || role === "uniSupervisor") && (
             <>
               <InputLabel sx={{ textAlign: "right" }}>التخصص</InputLabel>
               <Select
@@ -338,6 +433,31 @@ export default function Signup() {
                 <MenuItem value={"صحافة"}>جامعة ينبع الصناعية</MenuItem>
                 <MenuItem value={"صحافة"}>جامعة الامير سطام</MenuItem>
                 <MenuItem value={"صحافة"}>جامعة الامير سطام</MenuItem>
+              </Select>
+            </>
+          )}
+          {role === "companySupervisor" && (
+            <>
+              <InputLabel sx={{ textAlign: "right" }}>بيئة العمل</InputLabel>
+              <Select
+                required
+                value={company}
+                color="success"
+                fullWidth
+                MenuProps={MenuProps}
+                onChange={handleCompany}
+              >
+                <MenuItem value={"سدايا"}>سدايا</MenuItem>
+                <MenuItem value={"ارامكو السعودية"}>ارامكو السعودية</MenuItem>
+                <MenuItem value={"سابك"}>سابك</MenuItem>
+                <MenuItem value={"بنك الراجحي"}>بنك الراجحي</MenuItem>
+                <MenuItem value={"الاتصالات السعودية"}>
+                  الاتصالات السعودية
+                </MenuItem>
+                <MenuItem value={"اقتالعبيكانصاد"}>بنك الانماء</MenuItem>
+                <MenuItem value={"ادارة الاعمال"}>
+                  الاتحاد السعودي للامن السيبراني و برمجة الدرونز
+                </MenuItem>
               </Select>
             </>
           )}
