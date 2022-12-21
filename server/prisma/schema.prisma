@@ -15,6 +15,11 @@ model Student {
   firstName           String
   lastName            String
   fatherName          String
+  email               String
+  password            String
+  gender              String
+  major               String
+  phoneNumber         String
   gpa                 Float
   interest            String
   supervisor          StudentSupervisor @relation(fields: [studentSupervisor], references: [id])
@@ -29,31 +34,48 @@ model Student {
   universityId        Int
   submitions          Submissions       @relation(fields: [submissionsId], references: [id])
   submissionsId       Int               @unique
-  weeklyStatus        WeeklyStatus      @relation(fields: [weeklyStatusId], references: [id])
+  weeklyStatus        WeeklyStatus?     @relation(fields: [weeklyStatusId], references: [id])
   weeklyStatusId      Int               @unique
 }
 
 model StudentSupervisor {
   id              Int             @id @default(autoincrement())
   name            String
+  lastName        String
+  email           String
+  password        String
+  phoneNumber     String
+  gender          String
+  major           String
   admin           UniversityAdmin @relation(fields: [universityAdmin], references: [id])
   universityAdmin Int
-  weeklyStatus    WeeklyStatus    @relation(fields: [weeklyStatusId], references: [id])
-  weeklyStatusId  Int             @unique
+  weeklyStatus    WeeklyStatus?   @relation(fields: [weeklyStatusId], references: [id])
+  weeklyStatusId  Int?            @unique
   Student         Student[]
 }
 
 model CompanySupervisor {
-  id        Int       @id @default(autoincrement())
-  name      String
-  company   Company   @relation(fields: [companyId], references: [id])
-  companyId Int
-  Student   Student[]
+  id            Int         @id @default(autoincrement())
+  name          String
+  lastName      String
+  email         String
+  phoneNumber   String
+  password      String
+  gender        String
+  major         String
+  company       Company     @relation(fields: [companyId], references: [id])
+  companyId     Int
+  Student       Student[]
+  sumbmitions   Submissions @relation(fields: [submissionsId], references: [id])
+  submissionsId Int         @unique
 }
 
 model UniversityAdmin {
   id                Int                 @id @default(autoincrement())
   name              String
+  email             String
+  password          String
+  gender            String
   univeristy        University          @relation(fields: [universityId], references: [id])
   universityId      Int
   StudentSupervisor StudentSupervisor[]
@@ -68,8 +90,6 @@ model Company {
   location          String
   CompanySupervisor CompanySupervisor[]
   Student           Student[]
-  sumbmitions       Submissions         @relation(fields: [submissionsId], references: [id])
-  submissionsId     Int                 @unique
 }
 
 model University {
@@ -80,11 +100,11 @@ model University {
 }
 
 model Submissions {
-  id               Int      @id @default(autoincrement())
+  id               Int                @id @default(autoincrement())
   status           String
-  timeOfSubmission DateTime @default(now())
+  timeOfSubmission DateTime           @default(now())
   Student          Student?
-  Company          Company?
+  Company          CompanySupervisor?
 }
 
 model WeeklyStatus {
