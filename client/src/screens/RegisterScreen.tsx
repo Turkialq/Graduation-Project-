@@ -336,36 +336,6 @@ export default function Signup() {
               setPassword(e.target.value);
             }}
           />
-          {role === "student" && (
-            <>
-              <InputLabel sx={{ textAlign: "right" }}>اهتمامك</InputLabel>
-              <Select
-                required
-                value={intrest}
-                color="success"
-                fullWidth
-                MenuProps={MenuProps}
-                sx={{ textAlign: "right" }}
-                labelId="demo-multiple-chip-label"
-                onChange={handleIntrest}
-              >
-                <MenuItem value={"طب"}>طب</MenuItem>
-                <MenuItem value={"قانون"}>قانون</MenuItem>
-                <MenuItem value={"هندسة"}>هندسة</MenuItem>
-                <MenuItem value={"تقنية المعلومات"}>تقنية المعلومات</MenuItem>
-                <MenuItem value={"العلوم"}>العلوم</MenuItem>
-                <MenuItem value={"اقتصاد"}>اقتصاد</MenuItem>
-                <MenuItem value={"ادارة الاعمال"}>ادارة الاعمال</MenuItem>
-                <MenuItem value={"تسويق"}>تسويق</MenuItem>
-                <MenuItem value={"محاسبة"}>محاسبة</MenuItem>
-                <MenuItem value={"شريعة"}>شريعة</MenuItem>
-                <MenuItem value={"لغات و ترجمة"}>لغات و ترجمة</MenuItem>
-                <MenuItem value={"اعلام"}>اعلام</MenuItem>
-                <MenuItem value={"صحافة"}>صحافة</MenuItem>
-                <MenuItem value={"الزراعة والبيئة"}>الزراعة والبيئة</MenuItem>
-              </Select>
-            </>
-          )}
           {(role === "student" || role === "uniSupervisor") && (
             <>
               <InputLabel sx={{ textAlign: "right" }}>التخصص</InputLabel>
@@ -395,6 +365,61 @@ export default function Signup() {
               </Select>
             </>
           )}
+          {role === "student" && (
+            <>
+              <InputLabel sx={{ textAlign: "right" }}>اهتمامك</InputLabel>
+              <Select
+                required
+                value={intrest}
+                color="success"
+                fullWidth
+                MenuProps={MenuProps}
+                sx={{ textAlign: "right" }}
+                labelId="demo-multiple-chip-label"
+                onChange={handleIntrest}
+              >
+                {major === "تقنية المعلومات" && (
+                  <>
+                    <MenuItem value={"امن المعلومات"}>امن المعلومات</MenuItem>
+                    <MenuItem value={"حوسبة السحابية"}>حوسبة السحابية</MenuItem>
+                    <MenuItem value={"الذكاء الاصطناعي"}>
+                      الذكاء الاصطناعي
+                    </MenuItem>
+                  </>
+                )}
+                {major === "ادارة الاعمال" && (
+                  <>
+                    <MenuItem value={"X1"}>X1eco</MenuItem>
+                    <MenuItem value={"X2"}>X2eco</MenuItem>
+                    <MenuItem value={"X3"}>X3eco</MenuItem>
+                  </>
+                )}
+                {major === "قانون" && (
+                  <>
+                    <MenuItem value={"X1"}>X1law</MenuItem>
+                    <MenuItem value={"X2"}>X2law</MenuItem>
+                    <MenuItem value={"X3"}>X3law</MenuItem>
+                  </>
+                )}
+
+                {/* <MenuItem value={"طب"}>طب</MenuItem>
+                <MenuItem value={"قانون"}>قانون</MenuItem>
+                <MenuItem value={"هندسة"}>هندسة</MenuItem>
+                <MenuItem value={"تقنية المعلومات"}>تقنية المعلومات</MenuItem>
+                <MenuItem value={"العلوم"}>العلوم</MenuItem>
+                <MenuItem value={"اقتصاد"}>اقتصاد</MenuItem>
+                <MenuItem value={"ادارة الاعمال"}>ادارة الاعمال</MenuItem>
+                <MenuItem value={"تسويق"}>تسويق</MenuItem>
+                <MenuItem value={"محاسبة"}>محاسبة</MenuItem>
+                <MenuItem value={"شريعة"}>شريعة</MenuItem>
+                <MenuItem value={"لغات و ترجمة"}>لغات و ترجمة</MenuItem>
+                <MenuItem value={"اعلام"}>اعلام</MenuItem>
+                <MenuItem value={"صحافة"}>صحافة</MenuItem>
+                <MenuItem value={"الزراعة والبيئة"}>الزراعة والبيئة</MenuItem> */}
+              </Select>
+            </>
+          )}
+
           {(role === "student" || role === "uniSupervisor") && (
             <>
               <InputLabel sx={{ textAlign: "right" }}>الجامعة</InputLabel>
