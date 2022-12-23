@@ -14,11 +14,20 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import AuthContext from "../context/AuthContext";
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@material-ui/core";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [button, setButton] = useState<boolean>(true);
+  const [role, setRole] = useState<string>("");
+
   const navigate = useNavigate();
 
   const { loginUser, user }: any = useContext(AuthContext);
@@ -26,6 +35,12 @@ export default function LoginScreen() {
   const handlePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   useEffect(() => {
     if (email.length > 4 && password.length > 5 && email.includes("@")) {
@@ -62,9 +77,42 @@ export default function LoginScreen() {
           <Box
             component="form"
             noValidate
-            onSubmit={(e: FormEvent<HTMLFormElement>) => loginUser(e)}
+            onSubmit={(e: FormEvent<HTMLFormElement>) =>
+              loginUser(e, email, password, role)
+            }
             sx={{ mt: 1 }}
           >
+            <FormControl
+              component="fieldset"
+              style={{ marginTop: 10, textAlign: "right", width: "100%" }}
+            >
+              <FormLabel component="legend" color="primary">
+                مهنة
+              </FormLabel>
+              <RadioGroup
+                name="role"
+                style={{ display: "initial" }}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  setRole(e.target.value);
+                }}
+              >
+                <FormControlLabel
+                  value="student"
+                  control={<Radio color="secondary" />}
+                  label="طالب"
+                />
+                <FormControlLabel
+                  value="uniSupervisor"
+                  control={<Radio />}
+                  label="استاذ جامعي"
+                />
+                <FormControlLabel
+                  value="companySupervisor"
+                  control={<Radio />}
+                  label="مسؤل بيئة العمل "
+                />
+              </RadioGroup>
+            </FormControl>
             <TextField
               margin="normal"
               required

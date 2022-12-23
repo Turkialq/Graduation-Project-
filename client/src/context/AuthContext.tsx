@@ -6,7 +6,12 @@ type AuthProviderProps = {
 };
 
 type AuthContextProps = {
-  loginUser: (e: any) => void;
+  loginUser: (
+    event: any,
+    role: string,
+    email: string,
+    password: string
+  ) => void;
 };
 
 const AuthContext = createContext({} as AuthContextProps);
@@ -50,7 +55,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   ) => {
     event.preventDefault();
 
-    const url = "http://localhost:8080/register";
     const data = JSON.stringify({
       name,
       fatherName,
@@ -65,20 +69,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       university,
     });
     console.log(JSON.parse(data));
+    const url = "http://localhost:8080/user/register-student";
+    const headers = { "Content-Type": "application/json" };
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: data,
+    });
 
-    // const headers = { "Content-Type": "application/json" };
-
-    // const response = await fetch(url, {
-    //   method: "POST",
-    //   headers: headers,
-    //   body: data,
-    // });
-
-    // if (response.status === 200) {
-    //   navigate("/");
-    // } else {
-    //   alert("something went wrong");
-    // }
+    if (response.status === 200) {
+      navigate("/");
+    } else {
+      alert("something went wrong");
+    }
   };
   const registerUniversitySupervisor = async (
     event: any,
@@ -132,43 +135,62 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   ) => {
     event.preventDefault();
 
-    const url = "http://localhost:8080/register";
+    const url =
+      "http://localhost:8080/user/register-student-supervisor-company";
     const data = JSON.stringify({
       name,
       familyName,
+      gender,
       phoneNumber,
       email,
       password,
-      gender,
       company,
     });
     console.log(JSON.parse(data));
 
-    // const headers = { "Content-Type": "application/json" };
-
-    // const response = await fetch(url, {
-    //   method: "POST",
-    //   headers: headers,
-    //   body: data,
-    // });
-
-    // if (response.status === 200) {
-    //   navigate("/");
-    // } else {
-    //   alert("something went wrong");
-    // }
-  };
-  const loginUser = async (e: any) => {
-    e.preventDefault();
-
-    const url = "http://localhost:8080/login";
-    const data = JSON.stringify({
-      username: e.target.email.value,
-      password: e.target.password.value,
-    });
-    console.log(data);
     const headers = { "Content-Type": "application/json" };
 
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: data,
+    });
+
+    if (response.status === 200) {
+      navigate("/");
+    } else {
+      alert("something went wrong");
+    }
+  };
+  const loginUser = async (
+    event: any,
+    email: string,
+    password: string,
+    role: string
+  ) => {
+    event.preventDefault();
+    console.log(role);
+    const data = JSON.stringify({
+      email,
+      password,
+      role,
+    });
+    const headers = { "Content-Type": "application/json" };
+    var url = "";
+    switch (role) {
+      case "student":
+        url = "http://localhost:8080/user/login-student";
+        break;
+      case "uniSupervisor":
+        url = "http://localhost:8080/user/login-student-supervisor-university";
+        break;
+      case "companySupervisor":
+        url = "http://localhost:8080/user/login-student-supervisor-company";
+        break;
+
+      default:
+        break;
+    }
     const response = await fetch(url, {
       method: "POST",
       headers: headers,
@@ -180,12 +202,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setAuthTokens(info);
       setUser(JSON.stringify(info.access));
       localStorage.setItem("authToken", JSON.stringify(info));
-      navigate("/file-search");
+      navigate("/dashboard");
     } else {
       alert("something went wrong");
     }
   };
-
   const logout = async () => {
     const url = "http://localhost:8080/logout";
     const data = JSON.parse(localStorage.getItem("authToken")!)["refreshToken"];
@@ -207,7 +228,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const updateToken = async () => {
     console.log("Update token");
-    const url = "http://localhost:8080/refresh-token";
+    const url = "http://localhost:8080/user/refresh-token";
     const data = JSON.stringify({
       refresh: authToken.refreshToken,
     });
