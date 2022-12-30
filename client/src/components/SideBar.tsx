@@ -68,8 +68,15 @@ export default function SideBar() {
         <AppBar position="fixed" open={true}>
           <Toolbar sx={{ backgroundColor: "#6ECCAF" }}>
             <Tooltip title="معلومات">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <NotificationsActiveIcon sx={{ color: "whitesmoke" }} />
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
+                <AccountCircleIcon sx={{ color: "whitesmoke", fontSize: 30 }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="اشعارات" sx={{ backgroundColor: "#6ECCAF" }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
+                <NotificationsActiveIcon
+                  sx={{ color: "whitesmoke", fontSize: 30 }}
+                />
               </IconButton>
             </Tooltip>
             <Menu
