@@ -208,7 +208,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
   const logout = async () => {
-    const url = "http://localhost:8080/logout";
+    const url = "http://localhost:8080/user/logout";
     const data = JSON.parse(localStorage.getItem("authToken")!)["refreshToken"];
     const realData = JSON.stringify(data);
 

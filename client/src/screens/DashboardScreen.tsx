@@ -1,5 +1,9 @@
-import React from "react";
+import { useState, useEffect } from "react";
 
-export default function DashboardScreen() {
-  return <div>Dashboard</div>;
+export default function PersistentDrawerRight() {
+  return (
+    <>
+      <h1></h1>
+    </>
+  );
 }
