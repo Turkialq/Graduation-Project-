@@ -60,6 +60,31 @@ export default function SideBar() {
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
+  const handleSideBarNavigationClicks = (page: string) => {
+    switch (page) {
+      case "home page":
+        navigate("/dashboard");
+        break;
+      case "weekly tasks":
+        navigate("/weekly-tasks");
+        break;
+      case "company lists":
+        navigate("/company-list");
+        break;
+      case "interview":
+        navigate("/interview");
+        break;
+      case "contanct":
+        navigate("/contanct");
+        break;
+      case "profile":
+        navigate("/profile");
+        break;
+
+      default:
+        break;
+    }
+  };
 
   return (
     <>
@@ -130,7 +155,13 @@ export default function SideBar() {
           </DrawerHeader>
           <Divider />
           <List>
-            <ListItem key={"الصفحة الرئيسية"} disablePadding>
+            <ListItem
+              key={"الصفحة الرئيسية"}
+              disablePadding
+              onClick={() => {
+                handleSideBarNavigationClicks("home page");
+              }}
+            >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
                   <HomeIcon sx={{ color: "black" }} />
@@ -139,7 +170,13 @@ export default function SideBar() {
               </ListItemButton>
             </ListItem>
 
-            <ListItem key={"قائمة الشركات"} disablePadding>
+            <ListItem
+              key={"قائمة الشركات"}
+              disablePadding
+              onClick={() => {
+                handleSideBarNavigationClicks("company lists");
+              }}
+            >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
                   <ApartmentIcon sx={{ color: "black" }} />
@@ -148,7 +185,13 @@ export default function SideBar() {
               </ListItemButton>
             </ListItem>
 
-            <ListItem key={"مقابلة شخصية"} disablePadding>
+            <ListItem
+              key={"مقابلة شخصية"}
+              disablePadding
+              onClick={() => {
+                handleSideBarNavigationClicks("interview");
+              }}
+            >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
                   <ComputerIcon sx={{ color: "black" }} />
@@ -157,7 +200,13 @@ export default function SideBar() {
               </ListItemButton>
             </ListItem>
 
-            <ListItem key={"المهام الاسبوعية"} disablePadding>
+            <ListItem
+              key={"المهام الاسبوعية"}
+              disablePadding
+              onClick={() => {
+                handleSideBarNavigationClicks("weekly tasks");
+              }}
+            >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
                   <AssignmentIcon sx={{ color: "black" }} />
@@ -168,7 +217,13 @@ export default function SideBar() {
           </List>
           <Divider />
           <List>
-            <ListItem key={"المهام الاسبوعية"} disablePadding>
+            <ListItem
+              key={"التواصل"}
+              disablePadding
+              onClick={() => {
+                handleSideBarNavigationClicks("contanct");
+              }}
+            >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
                   <CallIcon sx={{ color: "black" }} />
@@ -176,7 +231,13 @@ export default function SideBar() {
                 <ListItemText primary={"التواصل"} />
               </ListItemButton>
             </ListItem>
-            <ListItem key={"الحساب الشخصي"} disablePadding>
+            <ListItem
+              key={"الحساب الشخصي"}
+              disablePadding
+              onClick={() => {
+                handleSideBarNavigationClicks("profile");
+              }}
+            >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
                   <AccountCircleIcon sx={{ color: "black" }} />

@@ -12,11 +12,7 @@ export default function AllRoutes() {
   const Location = useLocation();
 
   useEffect(() => {
-    if (
-      Location.pathname === "/" ||
-      Location.pathname === "/register" ||
-      Location.pathname === "/interview"
-    ) {
+    if (Location.pathname === "/" || Location.pathname === "/register") {
       setShowNavBar(false);
     } else {
       setShowNavBar(true);
@@ -30,10 +26,11 @@ export default function AllRoutes() {
         <Route path="/register" element={<RegisterScreen />}></Route>
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard" element={<DashboardScreen />}></Route>
-          <Route path="/company-list" element={<DashboardScreen />}></Route>
-          <Route path="/weekly-tasks" element={<DashboardScreen />}></Route>
-          <Route path="/interview" element={<DashboardScreen />}></Route>
-          <Route path="/contact" element={<DashboardScreen />}></Route>
+          <Route path="/company-list" element={<h1>company list</h1>}></Route>
+          <Route path="/weekly-tasks" element={<h1>weekly tasks</h1>}></Route>
+          <Route path="/interview" element={<h1>interview</h1>}></Route>
+          <Route path="/contact" element={<h1>contanct info</h1>}></Route>
+          <Route path="/profile" element={<h1>profile</h1>}></Route>
         </Route>
         <Route path="/*" element={<ErrorScreen />}></Route>
       </Routes>
