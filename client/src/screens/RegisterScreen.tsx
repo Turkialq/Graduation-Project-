@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useEffect, useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Paper, Avatar } from "@material-ui/core";
+import { Grid, Paper, Avatar, Box } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import AddCircleOutlineOutlinedIcon from "@material-ui/icons/AddCircleOutlineOutlined";
@@ -10,7 +10,13 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+  InputLabel,
+  Link,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import AuthContext from "../context/AuthContext";
 
 export default function Signup() {
@@ -18,7 +24,7 @@ export default function Signup() {
   const [name, setName] = useState<string>("");
   const [fatherName, setFatherName] = useState<string>("");
   const [familyName, setFamilyName] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<number | any>();
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [gender, setGender] = useState<string>("");
@@ -27,6 +33,12 @@ export default function Signup() {
   const [major, setMajor] = useState<string>("");
   const [university, setUniversity] = useState<string>("");
   const [company, setCompany] = useState<string>("");
+  const temp = [
+    { name: "tmemp", value: "temp" },
+    { name: "tmemp", value: "temp" },
+    { name: "tmemp", value: "temp" },
+    { name: "tmemp", value: "temp" },
+  ];
 
   const navigate = useNavigate();
 
@@ -34,7 +46,7 @@ export default function Signup() {
     setName("");
     setFatherName("");
     setFamilyName("");
-    setPhoneNumber(0);
+    setPhoneNumber("");
     setEmail("");
     setPassword("");
     setGender("");
@@ -51,6 +63,7 @@ export default function Signup() {
   }: any = useContext(AuthContext);
 
   const handleIntrest = (event: SelectChangeEvent) => {
+    console.log(event.target.value);
     setIntrest(event.target.value as string);
   };
 
@@ -151,6 +164,7 @@ export default function Signup() {
               مهنة
             </FormLabel>
             <RadioGroup
+              dir="rtl"
               name="role"
               style={{ display: "initial" }}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -158,6 +172,7 @@ export default function Signup() {
               }}
             >
               <FormControlLabel
+                dir="rtl"
                 value="student"
                 control={<Radio color="secondary" />}
                 label="طالب"
@@ -175,6 +190,7 @@ export default function Signup() {
             </RadioGroup>
           </FormControl>
           <TextField
+            dir="rtl"
             value={name}
             margin="normal"
             required
@@ -278,7 +294,6 @@ export default function Signup() {
           )}
           <TextField
             value={phoneNumber}
-            type="number"
             margin="normal"
             required
             fullWidth
@@ -369,40 +384,40 @@ export default function Signup() {
             <>
               <InputLabel sx={{ textAlign: "right" }}>اهتمامك</InputLabel>
               <Select
+                dir="ltr"
                 required
                 value={intrest}
                 color="success"
                 fullWidth
                 MenuProps={MenuProps}
                 sx={{ textAlign: "right" }}
-                labelId="demo-multiple-chip-label"
                 onChange={handleIntrest}
               >
-                {major === "تقنية المعلومات" && (
-                  <>
+                {/* {major === "تقنية المعلومات" && (
+                  <div>
                     <MenuItem value={"امن المعلومات"}>امن المعلومات</MenuItem>
                     <MenuItem value={"حوسبة السحابية"}>حوسبة السحابية</MenuItem>
                     <MenuItem value={"الذكاء الاصطناعي"}>
                       الذكاء الاصطناعي
                     </MenuItem>
-                  </>
+                  </div>
                 )}
                 {major === "ادارة الاعمال" && (
-                  <>
+                  <div>
                     <MenuItem value={"X1"}>X1eco</MenuItem>
                     <MenuItem value={"X2"}>X2eco</MenuItem>
                     <MenuItem value={"X3"}>X3eco</MenuItem>
-                  </>
+                  </div>
                 )}
                 {major === "قانون" && (
-                  <>
+                  <div>
                     <MenuItem value={"X1"}>X1law</MenuItem>
                     <MenuItem value={"X2"}>X2law</MenuItem>
                     <MenuItem value={"X3"}>X3law</MenuItem>
-                  </>
-                )}
+                  </div>
+                )} */}
 
-                {/* <MenuItem value={"طب"}>طب</MenuItem>
+                <MenuItem value={"طب"}>طب</MenuItem>
                 <MenuItem value={"قانون"}>قانون</MenuItem>
                 <MenuItem value={"هندسة"}>هندسة</MenuItem>
                 <MenuItem value={"تقنية المعلومات"}>تقنية المعلومات</MenuItem>
@@ -415,7 +430,7 @@ export default function Signup() {
                 <MenuItem value={"لغات و ترجمة"}>لغات و ترجمة</MenuItem>
                 <MenuItem value={"اعلام"}>اعلام</MenuItem>
                 <MenuItem value={"صحافة"}>صحافة</MenuItem>
-                <MenuItem value={"الزراعة والبيئة"}>الزراعة والبيئة</MenuItem> */}
+                <MenuItem value={"الزراعة والبيئة"}>الزراعة والبيئة</MenuItem>
               </Select>
             </>
           )}
@@ -440,8 +455,10 @@ export default function Signup() {
                   جامعة الاميرة نوره
                 </MenuItem>
                 <MenuItem value={"تقنية المعلومات"}>جامعة ام القرى</MenuItem>
-                <MenuItem value={"العلوم"}>جامعة الملك عبدالعزيز</MenuItem>
-                <MenuItem value={"اقتصاد"}>
+                <MenuItem value={">جامعة الملك عبدالعزيز"}>
+                  جامعة الملك عبدالعزيز
+                </MenuItem>
+                <MenuItem value={"جامعة الملك فهد لي البترول و المعادن"}>
                   جامعة الملك فهد لي البترول و المعادن
                 </MenuItem>
                 <MenuItem value={"ادارة الاعمال"}>جامعة الملك فيصل</MenuItem>
@@ -479,17 +496,25 @@ export default function Signup() {
                 <MenuItem value={"الاتصالات السعودية"}>
                   الاتصالات السعودية
                 </MenuItem>
-                <MenuItem value={"اقتالعبيكانصاد"}>بنك الانماء</MenuItem>
+                <MenuItem value={"بنك الانماء"}>بنك الانماء</MenuItem>
                 <MenuItem value={"ادارة الاعمال"}>
                   الاتحاد السعودي للامن السيبراني و برمجة الدرونز
                 </MenuItem>
               </Select>
             </>
           )}
+
           <FormControlLabel
             control={<Checkbox name="checkedA" />}
             label="اقبل بقوانين المنصه"
           />
+          <Link
+            href="/"
+            variant="body2"
+            sx={{ color: "#6ECCAF", marginLeft: 28 }}
+          >
+            {"لديك حساب في المنصة؟"}
+          </Link>
           <Button
             fullWidth
             type="submit"

@@ -83,8 +83,11 @@ export default function LoginScreen() {
             sx={{ mt: 1 }}
           >
             <FormControl
-              component="fieldset"
-              style={{ marginTop: 10, textAlign: "right", width: "100%" }}
+              style={{
+                marginTop: 10,
+                textAlign: "right",
+                width: "100%",
+              }}
             >
               <FormLabel component="legend" color="primary">
                 مهنة
@@ -97,23 +100,27 @@ export default function LoginScreen() {
                 }}
               >
                 <FormControlLabel
-                  value="student"
-                  control={<Radio color="secondary" />}
-                  label="طالب"
+                  dir="ltr"
+                  value="companySupervisor"
+                  control={<Radio />}
+                  label="مسؤل بيئة العمل "
                 />
                 <FormControlLabel
+                  dir="ltr"
                   value="uniSupervisor"
                   control={<Radio />}
                   label="استاذ جامعي"
                 />
                 <FormControlLabel
-                  value="companySupervisor"
-                  control={<Radio />}
-                  label="مسؤل بيئة العمل "
+                  dir="ltr"
+                  value="student"
+                  control={<Radio color="secondary" />}
+                  label="طالب"
                 />
               </RadioGroup>
             </FormControl>
             <TextField
+              dir="ltr"
               margin="normal"
               required
               fullWidth
