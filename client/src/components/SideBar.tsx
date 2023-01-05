@@ -91,17 +91,10 @@ export default function SideBar() {
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="fixed" open={true}>
-          <Toolbar sx={{ backgroundColor: "#6ECCAF" }}>
+          <Toolbar sx={{ backgroundColor: "#3C6255" }}>
             <Tooltip title="معلومات">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
                 <AccountCircleIcon sx={{ color: "whitesmoke", fontSize: 30 }} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="اشعارات" sx={{ backgroundColor: "#6ECCAF" }}>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
-                <NotificationsActiveIcon
-                  sx={{ color: "whitesmoke", fontSize: 30 }}
-                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -151,7 +144,7 @@ export default function SideBar() {
           open={true}
         >
           <DrawerHeader>
-            <SchoolIcon sx={{ fontSize: 45, color: "#6ECCAF" }} />
+            <SchoolIcon sx={{ fontSize: 45, color: "#3C6255" }} />
           </DrawerHeader>
           <Divider />
           <List>
@@ -164,7 +157,7 @@ export default function SideBar() {
             >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
-                  <HomeIcon sx={{ color: "black" }} />
+                  <HomeIcon sx={{ color: "#3C6255" }} />
                 </ListItemIcon>
                 <ListItemText primary={"الصفحة الرئيسية"} />
               </ListItemButton>
@@ -179,7 +172,7 @@ export default function SideBar() {
             >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
-                  <ApartmentIcon sx={{ color: "black" }} />
+                  <ApartmentIcon sx={{ color: "#3C6255" }} />
                 </ListItemIcon>
                 <ListItemText primary={"قائمة الشركات"} />
               </ListItemButton>
@@ -194,7 +187,7 @@ export default function SideBar() {
             >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
-                  <ComputerIcon sx={{ color: "black" }} />
+                  <ComputerIcon sx={{ color: "#3C6255" }} />
                 </ListItemIcon>
                 <ListItemText primary={"مقابلة شخصية"} />
               </ListItemButton>
@@ -209,7 +202,7 @@ export default function SideBar() {
             >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
-                  <AssignmentIcon sx={{ color: "black" }} />
+                  <AssignmentIcon sx={{ color: "#3C6255" }} />
                 </ListItemIcon>
                 <ListItemText primary={"المهام الاسبوعية"} />
               </ListItemButton>
@@ -226,7 +219,7 @@ export default function SideBar() {
             >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
-                  <CallIcon sx={{ color: "black" }} />
+                  <CallIcon sx={{ color: "#3C6255" }} />
                 </ListItemIcon>
                 <ListItemText primary={"التواصل"} />
               </ListItemButton>
@@ -240,7 +233,7 @@ export default function SideBar() {
             >
               <ListItemButton sx={{ textAlign: "right" }}>
                 <ListItemIcon>
-                  <AccountCircleIcon sx={{ color: "black" }} />
+                  <AccountCircleIcon sx={{ color: "#3C6255" }} />
                 </ListItemIcon>
                 <ListItemText primary={"الحساب الشخصي"} />
               </ListItemButton>

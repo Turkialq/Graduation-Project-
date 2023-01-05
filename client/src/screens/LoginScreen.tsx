@@ -21,6 +21,7 @@ import {
   Radio,
   RadioGroup,
 } from "@material-ui/core";
+import Image from "../assets/background.png";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState<string>("");
@@ -52,16 +53,10 @@ export default function LoginScreen() {
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        sx={{
-          backgroundImage: `url(${"/Users/turkialqahtani/Desktop/GP2/client/src/assets/background.jpg"})`,
-        }}
-      />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={20}>
+      <Grid item md={7} sm={5} xs={1}>
+        <img style={{ width: 700, height: 700 }} src={Image} />
+      </Grid>
+      <Grid item xs={11} sm={5} md={5} component={Paper} elevation={20}>
         <Box
           sx={{
             my: 8,
@@ -120,7 +115,6 @@ export default function LoginScreen() {
               </RadioGroup>
             </FormControl>
             <TextField
-              dir="ltr"
               margin="normal"
               required
               fullWidth
@@ -175,7 +169,7 @@ export default function LoginScreen() {
             >
               دخول
             </Button>
-            <Grid container justifyContent={"flex-end"}>
+            <Grid container>
               <Grid item>
                 <Link
                   href="/register"

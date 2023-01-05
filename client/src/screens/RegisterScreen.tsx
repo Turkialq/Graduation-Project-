@@ -1,6 +1,5 @@
 import { ChangeEvent, useContext, useEffect, useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { Grid, Paper, Avatar, Box } from "@material-ui/core";
+import { Grid, Paper, Avatar } from "@material-ui/core";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import AddCircleOutlineOutlinedIcon from "@material-ui/icons/AddCircleOutlineOutlined";
@@ -33,14 +32,6 @@ export default function Signup() {
   const [major, setMajor] = useState<string>("");
   const [university, setUniversity] = useState<string>("");
   const [company, setCompany] = useState<string>("");
-  const temp = [
-    { name: "tmemp", value: "temp" },
-    { name: "tmemp", value: "temp" },
-    { name: "tmemp", value: "temp" },
-    { name: "tmemp", value: "temp" },
-  ];
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     setName("");
@@ -150,7 +141,7 @@ export default function Signup() {
         }}
       >
         <Grid>
-          <Avatar style={{ backgroundColor: "#1bbd7e", marginLeft: 400 }}>
+          <Avatar style={{ backgroundColor: "#3C6255", marginLeft: 400 }}>
             <AddCircleOutlineOutlinedIcon />
           </Avatar>
           <h2 style={{ marginLeft: 350 }}>انشاء حساب</h2>
@@ -511,16 +502,17 @@ export default function Signup() {
           <Link
             href="/"
             variant="body2"
-            sx={{ color: "#6ECCAF", marginLeft: 28 }}
+            sx={{ color: "#6ECCAF", marginRight: 2 }}
           >
             {"لديك حساب في المنصة؟"}
           </Link>
+
           <Button
             fullWidth
             type="submit"
             variant="contained"
             sx={{
-              backgroundColor: "#6ECCAF",
+              backgroundColor: "#3C6255",
               "&:hover": {
                 backgroundColor: "#6ECCAF",
               },
