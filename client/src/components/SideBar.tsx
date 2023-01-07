@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { IconButton, Box, Tooltip, Menu, MenuItem } from "@mui/material";
@@ -20,10 +20,9 @@ import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import SchoolIcon from "@mui/icons-material/School";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import AuthContext from "../context/AuthContext";
 
-const drawerWidth = 265;
+const drawerWidth = "19%";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;

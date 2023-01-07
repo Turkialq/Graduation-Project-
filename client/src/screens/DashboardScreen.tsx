@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import StatBox from "../components/StatBox";
-import DashboardDate from "../components/DashboardDate";
+import DatePicker from "../components/dashboard/DatePicker";
+import Chart, { BarChart } from "../components/dashboard/chart";
 
 export default function PersistentDrawerRight() {
   const userName = useState("");
@@ -17,7 +18,7 @@ export default function PersistentDrawerRight() {
 
   return (
     <>
-      <Box m="20px" sx={{ backgroundColor: "#EFF5F5" }}>
+      <Box marginLeft={2} marginTop={13} sx={{ backgroundColor: "#EFF5F5" }}>
         {/* GRID & CHARTS */}
         <Box
           display="grid"
@@ -31,11 +32,19 @@ export default function PersistentDrawerRight() {
             component="div"
             gridColumn="span 9"
             display="flex"
-            alignItems="center"
+            flexDirection="row"
             justifyContent="center"
             sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
           >
-            <StatBox title="تركي محمد القحطاني" subtitle="جامعة الامام" />
+            <Typography p={1} color={"black"} variant="h5" fontWeight="600">
+              تركي محمد القحطاني
+            </Typography>
+            <Typography p={1} color={"black"} variant="h5" fontWeight="600">
+              تركي محمد القحطاني
+            </Typography>
+            <Typography p={1} color={"black"} variant="h5" fontWeight="600">
+              تركي محمد القحطاني
+            </Typography>
           </Box>
 
           <Box
@@ -106,19 +115,16 @@ export default function PersistentDrawerRight() {
             p="10px"
             sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
           >
-            {/* <Typography variant="h5" fontWeight="600">
-              المهام الاسبوعية
-            </Typography> */}
+            <Chart />
           </Box>
           <Box
             component="div"
             gridColumn="span 4"
             gridRow="span 2"
-            p="3px"
+            p="5px"
             sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
           >
-            <DashboardDate />
-            {/* <AdminChart /> */}
+            <BarChart />
           </Box>
         </Box>
       </Box>
