@@ -514,7 +514,7 @@ export default function Signup() {
             sx={{
               backgroundColor: "#3C6255",
               "&:hover": {
-                backgroundColor: "#6ECCAF",
+                backgroundColor: "#86C8BC",
               },
             }}
           >

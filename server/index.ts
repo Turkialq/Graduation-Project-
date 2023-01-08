@@ -2,10 +2,12 @@ import express, { Request, Response, Application } from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
 import bodyParser from "body-parser";
+// Routes
+import companyRouter from "./routes/companyRoutes";
+import userRouter from "./routes/userAuth";
 
+//** CONFIG **/
 const app: Application = express();
-const userRouter = require("./routes/userAuth");
-
 dotenv.config();
 
 //** MIDDLEWARE **/
@@ -17,6 +19,7 @@ app.use(
 );
 
 app.use("/user", userRouter);
+app.use("/company", companyRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from the back");

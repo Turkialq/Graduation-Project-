@@ -161,9 +161,9 @@ export default function LoginScreen() {
               sx={{
                 mt: 3,
                 mb: 2,
-                backgroundColor: "#6ECCAF",
+                backgroundColor: "#3C6255",
                 "&:hover": {
-                  backgroundColor: "#6ECCAF",
+                  backgroundColor: "#86C8BC",
                 },
               }}
             >

@@ -91,8 +91,8 @@ export default function SideBar() {
         <CssBaseline />
         <AppBar position="fixed" open={true}>
           <Toolbar sx={{ backgroundColor: "#3C6255" }}>
-            <Tooltip title="معلومات">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
+            <Tooltip title="معلومات" sx={{ marginLeft: 35 }}>
+              <IconButton onClick={handleOpenUserMenu}>
                 <AccountCircleIcon sx={{ color: "whitesmoke", fontSize: 30 }} />
               </IconButton>
             </Tooltip>
@@ -104,7 +104,6 @@ export default function SideBar() {
                 vertical: "top",
                 horizontal: "right",
               }}
-              keepMounted
               transformOrigin={{
                 vertical: "top",
                 horizontal: "right",
@@ -117,7 +116,7 @@ export default function SideBar() {
               <MenuItem key={"تسجيل الخروج"} onClick={() => logout()}>
                 <Typography textAlign="center">{"تسجيل الخروج"}</Typography>
               </MenuItem>
-            </Menu>{" "}
+            </Menu>
             <Typography
               variant="h6"
               noWrap
