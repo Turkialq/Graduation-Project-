@@ -10,7 +10,7 @@ const customTheme = createTheme({
       default: "#EFF5F5",
     },
   },
-  direction: "rtl",
+
   breakpoints: {
     values: {
       xs: 0,

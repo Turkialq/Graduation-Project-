@@ -2,19 +2,17 @@ import { useState, useEffect } from "react";
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import StatBox from "../components/StatBox";
-import DatePicker from "../components/dashboard/DatePicker";
 import Chart, { BarChart } from "../components/dashboard/chart";
+import axios from "axios";
 
 export default function PersistentDrawerRight() {
   const userName = useState("");
   const userUniveristy = useState("");
   const userWorkPlace = useState("");
   const studentGPA = useState("");
-
-  useEffect(() => {
-    // fetch all data related to the specific user info
-    console.log("dashboard information");
-  }, []);
+  const studentUniSupervisor = useState("");
+  const studentPriSupervisor = useState("");
+  const companyNames = useState([{}]);
 
   return (
     <>
