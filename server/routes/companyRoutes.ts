@@ -15,6 +15,7 @@ router.get(
     console.log("HIT POINT COMPANY LIST");
     try {
       const result = await prisma.company.findMany();
+      // change it to arabic --> better front-end format
       res.json(result);
     } catch (error) {
       console.log(`COMPANY-LIST ERROR :${error}`);
