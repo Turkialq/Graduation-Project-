@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 // Routes
 import companyRouter from "./routes/companyRoutes";
 import userRouter from "./routes/userAuth";
-
+import studentRouter from "./routes/studentSupervisor";
 //** CONFIG **/
 const app: Application = express();
 dotenv.config();
@@ -19,6 +19,7 @@ app.use(
 );
 
 app.use("/user", userRouter);
+app.use("/student", studentRouter);
 app.use("/company", companyRouter);
 
 app.get("/", (req: Request, res: Response) => {

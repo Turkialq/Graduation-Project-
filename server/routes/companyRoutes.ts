@@ -3,9 +3,25 @@
 // company status
 import express, { Request, Response, Router } from "express";
 import { PrismaClient } from "@prisma/client";
+import { authenticateToken } from "./userAuth";
 
 const prisma = new PrismaClient();
 const router: Router = express.Router();
+// get all company in the platform as json
+router.get(
+  "/get-company-list",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    console.log("HIT POINT COMPANY LIST");
+    try {
+      const result = await prisma.company.findMany();
+      res.json(result);
+    } catch (error) {
+      console.log(`COMPANY-LIST ERROR :${error}`);
+      res.sendStatus(500);
+    }
+  }
+);
 
 router.post("/register-company", async (req: Request, res: Response) => {
   try {
