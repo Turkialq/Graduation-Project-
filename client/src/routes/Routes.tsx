@@ -5,6 +5,7 @@ import RegisterScreen from "../screens/RegisterScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 import ErrorScreen from "../screens/ErrorScreen";
 import CompanyListScreen from "../screens/CompanyListScreen";
+import WeeklyTasks from "../screens/WeeklyTasks";
 import ProtectedRoutes from "./ProtectedRoutes";
 import SideBar from "../components/SideBar";
 
@@ -28,7 +29,7 @@ export default function AllRoutes() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard" element={<DashboardScreen />}></Route>
           <Route path="/company-list" element={<CompanyListScreen />}></Route>
-          <Route path="/weekly-tasks" element={<h1>weekly tasks</h1>}></Route>
+          <Route path="/weekly-tasks" element={<WeeklyTasks />}></Route>
           <Route path="/interview" element={<h1>interview</h1>}></Route>
           <Route path="/contact" element={<h1>contanct info</h1>}></Route>
           <Route path="/profile" element={<h1>profile</h1>}></Route>
