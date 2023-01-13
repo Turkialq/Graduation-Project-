@@ -215,7 +215,7 @@ router.post("/login-student", async (req: Request, res: Response) => {
 
     if (user) {
       const result = bcrypt.compareSync(userInfo.password, user.password);
-      if (!result) return res.sendStatus(500).send("wrong password");
+      if (!result) return res.sendStatus(500);
 
       const acessToken = generateAcessToken(user);
       const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET!);
@@ -232,7 +232,7 @@ router.post("/login-student", async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.log(error);
-    res.sendStatus(500).send(`error has happened ${error}`);
+    res.sendStatus(500);
   }
 });
 router.post(
@@ -290,7 +290,7 @@ router.post(
 
       if (user) {
         const result = bcrypt.compareSync(userInfo.password, user.password);
-        if (!result) return res.sendStatus(500).send("wrong password");
+        if (!result) return res.sendStatus(500);
 
         const acessToken = generateAcessToken(user);
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET!);
