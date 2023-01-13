@@ -196,15 +196,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       headers: headers,
       body: data,
     });
-    const info = await response.json();
-    console.log(info);
     if (response.status === 200) {
+      const info = await response.json();
       setAuthTokens(info);
       setUser(JSON.stringify(info.access));
       localStorage.setItem("authToken", JSON.stringify(info));
       navigate("/dashboard");
     } else {
-      alert("something went wrong");
+      console.log("HEREO");
+      alert("خطاء  في اسم المستخدم او كلمة");
     }
   };
   const logout = async () => {

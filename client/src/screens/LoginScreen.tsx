@@ -71,7 +71,6 @@ export default function LoginScreen() {
           </Typography>
           <Box
             component="form"
-            noValidate
             onSubmit={(e: FormEvent<HTMLFormElement>) =>
               loginUser(e, email, password, role)
             }
@@ -169,17 +168,14 @@ export default function LoginScreen() {
             >
               دخول
             </Button>
-            <Grid container>
-              <Grid item>
-                <Link
-                  href="/register"
-                  variant="body2"
-                  sx={{ color: "#6ECCAF" }}
-                >
-                  {"ليس لديك حساب في المنصة؟"}
-                </Link>
-              </Grid>
-            </Grid>
+
+            <Link
+              href="/register"
+              variant="body2"
+              sx={{ color: "#6ECCAF", marginLeft: 50 }}
+            >
+              {"ليس لديك حساب في المنصة؟"}
+            </Link>
             <Typography variant="body2" color="text.secondary" align="center">
               {"حقوق©منصة تدريبي "}
             </Typography>

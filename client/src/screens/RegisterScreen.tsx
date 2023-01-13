@@ -502,7 +502,7 @@ export default function Signup() {
           <Link
             href="/"
             variant="body2"
-            sx={{ color: "#6ECCAF", marginRight: 2 }}
+            sx={{ color: "#6ECCAF", marginLeft: 22 }}
           >
             {"لديك حساب في المنصة؟"}
           </Link>
