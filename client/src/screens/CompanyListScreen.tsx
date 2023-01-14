@@ -35,6 +35,29 @@ export default function CompanyListScreen() {
     []
   );
 
+  const handleCompanySubmition = async () => {
+    const params = new URLSearchParams();
+    params.set("companyName", selectedCompanyName);
+    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url = `http://localhost:8080/company/submit-company/?${params.toString()}`;
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+    });
+    if (response.status === 200) {
+      console.log("good");
+    } else {
+      alert("something went wrong");
+    }
+  };
+
   const getCompanyList = async () => {
     const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
       "acessToken"
@@ -48,11 +71,11 @@ export default function CompanyListScreen() {
       .get(url, { headers })
       .then((res: any) => {
         setCompanyList(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((error: any) => {
         alert(error);
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -98,6 +121,7 @@ export default function CompanyListScreen() {
         </DialogContent>
         <DialogActions>
           <Button
+            onClick={() => handleCompanySubmition()}
             variant="contained"
             sx={{
               fontSize: 20,

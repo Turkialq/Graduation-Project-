@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 
 const StatBox = ({ title, icon }: any) => {
   return (
-    <Box width="100%" m="0 30px">
+    <Box width="1%" marginLeft={2}>
       <Box display="flex">
         <Box>
           {icon}
