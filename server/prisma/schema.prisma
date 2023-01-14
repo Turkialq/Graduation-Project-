@@ -32,10 +32,10 @@ model Student {
   companyId           Int?
   university          University         @relation(fields: [universityId], references: [id])
   universityId        Int
-  submitions          Submissions?       @relation(fields: [submissionsId], references: [id])
-  submissionsId       Int?               @unique
-  weeklyStatus        WeeklyStatus?      @relation(fields: [weeklyStatusId], references: [id])
-  weeklyStatusId      Int?               @unique
+  submitions          Submissions?
+
+  weeklyStatus   WeeklyStatus? @relation(fields: [weeklyStatusId], references: [id])
+  weeklyStatusId Int?          @unique
 }
 
 model StudentSupervisor {
@@ -55,19 +55,17 @@ model StudentSupervisor {
 }
 
 model CompanySupervisor {
-  id            Int          @id @default(autoincrement())
-  name          String
-  lastName      String
-  email         String
-  phoneNumber   String
-  password      String
-  gender        String
-  major         String
-  company       Company      @relation(fields: [companyId], references: [id])
-  companyId     Int
-  Student       Student[]
-  sumbmitions   Submissions? @relation(fields: [submissionsId], references: [id])
-  submissionsId Int?         @unique
+  id          Int       @id @default(autoincrement())
+  name        String
+  lastName    String
+  email       String
+  phoneNumber String
+  password    String
+  gender      String
+  major       String
+  company     Company   @relation(fields: [companyId], references: [id])
+  companyId   Int
+  Student     Student[]
 }
 
 model UniversityAdmin {
@@ -90,6 +88,7 @@ model Company {
   location          String
   CompanySupervisor CompanySupervisor[]
   Student           Student[]
+  sumbmitions       Submissions?
 }
 
 model University {
@@ -100,11 +99,13 @@ model University {
 }
 
 model Submissions {
-  id               Int                @id @default(autoincrement())
+  id               Int      @id @default(autoincrement())
   status           String
-  timeOfSubmission DateTime           @default(now())
-  Student          Student?
-  Company          CompanySupervisor?
+  timeOfSubmission DateTime @default(now())
+  student          Student  @relation(fields: [studentID], references: [id])
+  studentID        Int      @unique
+  company          Company  @relation(fields: [companyID], references: [id])
+  companyID        Int      @unique
 }
 
 model WeeklyStatus {

@@ -54,7 +54,10 @@ export const authenticateToken = (
 ) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader?.split(" ")[1];
-  if (token == null) return res.sendStatus(404);
+  if (token == null) {
+    console.log("something went wrong with JWT ");
+    return res.sendStatus(500);
+  }
   jwt.verify(
     token,
     process.env.ACESS_TOKEN_SECRET!,
@@ -85,7 +88,7 @@ router.post("/register-student", async (req: Request, res: Response) => {
       university: req.body.university,
     };
     const university = await prisma.university.findFirst({
-      where: { name: "جامعة الامام محمد بن سعود" },
+      where: { name: userInfo.university },
     });
     const uniSupervisor = await prisma.studentSupervisor.findFirst({
       where: { name: "تركي" },
