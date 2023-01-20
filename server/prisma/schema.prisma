@@ -32,7 +32,7 @@ model Student {
   companyId           Int?
   university          University         @relation(fields: [universityId], references: [id])
   universityId        Int
-  submitions          Submissions?
+  submitions          Submissions[]
 
   weeklyStatus   WeeklyStatus? @relation(fields: [weeklyStatusId], references: [id])
   weeklyStatusId Int?          @unique
@@ -88,7 +88,7 @@ model Company {
   location          String
   CompanySupervisor CompanySupervisor[]
   Student           Student[]
-  sumbmitions       Submissions?
+  sumbmitions       Submissions[]
 }
 
 model University {
@@ -103,7 +103,7 @@ model Submissions {
   status           String
   timeOfSubmission DateTime @default(now())
   student          Student  @relation(fields: [studentID], references: [id])
-  studentID        Int      @unique
+  studentID        Int
   company          Company  @relation(fields: [companyID], references: [id])
   companyID        Int      @unique
 }

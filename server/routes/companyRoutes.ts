@@ -24,13 +24,75 @@ router.get(
   }
 );
 
+router.get(
+  "/get-submition-lists",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const { firstName, lastName } = req.body.user;
+    try {
+      const user = await prisma.student.findFirst({
+        where: {
+          firstName: firstName,
+          lastName: lastName,
+        },
+      });
+      const submitions = await prisma.submissions.findMany({
+        where: {
+          studentID: user?.id,
+        },
+        select: {
+          companyID: true,
+          status: true,
+        },
+      });
+      const companies = await prisma.company.findMany({
+        where: {
+          id: {
+            in: submitions.map((obj) => {
+              return obj.companyID;
+            }) as any,
+          },
+        },
+        select: {
+          name: true,
+          id: true,
+        },
+      });
+      console.log(companies);
+      console.log(submitions);
+      const result = [];
+
+      for (let i = 0; i < submitions.length; i++) {
+        for (let j = 0; j < submitions.length; j++) {
+          if (submitions[i].companyID === companies[j].id) {
+            console.log(submitions[i], companies[j]);
+            const temp = {
+              company: companies[j].name,
+              status: submitions[i].status,
+            };
+            result.push(temp);
+          }
+        }
+      }
+      console.log(result);
+
+      res.json(result);
+    } catch (error) {
+      res.sendStatus(500);
+      console.log(`ERROR IN SUBMITION LIST ${error}`);
+    }
+  }
+);
+
 router.post(
   "/submit-company",
   authenticateToken,
   async (req: Request, res: Response) => {
     console.log(req.body);
-    const { firstName, lastName } = req.body;
+    const { firstName, lastName } = req.body.user;
+    console.log(firstName, lastName);
     const { companyName }: any = req.query;
+    console.log(companyName);
 
     try {
       const company = await prisma.company.findFirst({
