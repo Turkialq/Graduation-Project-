@@ -58,6 +58,10 @@ router.get(
           id: true,
         },
       });
+      if (submitions === undefined) {
+        res.send(null);
+        return;
+      }
       console.log(companies);
       console.log(submitions);
       const result = [];
@@ -67,8 +71,9 @@ router.get(
           if (submitions[i].companyID === companies[j].id) {
             console.log(submitions[i], companies[j]);
             const temp = {
-              company: companies[j].name,
-              status: submitions[i].status,
+              id: companies[j].id,
+              "اسم المنشاة": companies[j].name,
+              "حالة الطلب": submitions[i].status,
             };
             result.push(temp);
           }
@@ -110,7 +115,7 @@ router.post(
       console.log(company);
       const submition = await prisma.submissions.create({
         data: {
-          status: "pending",
+          status: "تحت الاجراء",
           studentID: student!.id as any,
           companyID: company!.id as any,
         },
