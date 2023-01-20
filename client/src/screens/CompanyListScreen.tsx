@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, forwardRef } from "react";
 import axios from "axios";
 import { Box, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -7,6 +7,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 type companyList = {
   field: string;
@@ -23,6 +25,7 @@ export default function CompanyListScreen() {
   const [selectedCompanyLocation, setSelectedCompanyLocation] = useState("");
   const [selectedCompanyType, setSelectedCompanyType] = useState("");
   const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
   const colums = useMemo(
     () => [
@@ -34,6 +37,27 @@ export default function CompanyListScreen() {
     ],
     []
   );
+  const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+
+  const handleClick = () => {
+    setOpenAlert(true);
+  };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenAlert(false);
+  };
 
   const handleCompanySubmition = async () => {
     const params = new URLSearchParams();
@@ -53,6 +77,8 @@ export default function CompanyListScreen() {
     });
     if (response.status === 200) {
       console.log("good");
+      setOpen(false);
+      handleClick();
     } else {
       alert("something went wrong");
     }
@@ -62,7 +88,7 @@ export default function CompanyListScreen() {
     const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "http://localhost:8080/company/get-company-list/";
+    const url = "https://localhost:8080/company/get-company-list/";
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,
@@ -71,7 +97,7 @@ export default function CompanyListScreen() {
       .get(url, { headers })
       .then((res: any) => {
         setCompanyList(res.data);
-        // console.log(res.data);
+        console.log(res.data);
       })
       .catch((error: any) => {
         alert(error);
@@ -95,6 +121,22 @@ export default function CompanyListScreen() {
           backgroundColor: "#EFF5F5",
         }}
       >
+        <>
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={openAlert}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              sx={{ width: 450, height: 50 }}
+            >
+              تم التقديم
+            </Alert>
+          </Snackbar>
+        </>
         <DataGrid
           onRowClick={(e: any) => {
             setSelectedCompanyName(e.row.name);

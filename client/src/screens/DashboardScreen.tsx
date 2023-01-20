@@ -1,19 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Box, Typography } from "@mui/material";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import StatBox from "../components/StatBox";
 import Chart, { BarChart } from "../components/dashboard/chart";
+import { DataGrid } from "@mui/x-data-grid";
 import Skeleton from "@mui/material/Skeleton";
 import axios from "axios";
 
 export default function DashboardScreen() {
+  const [loading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [userUniveristy, setUserUniversity] = useState("");
   const [userWorkPlace, setUserWorkPlace] = useState("");
   const [studentGPA, setStudentGPA] = useState("");
   const [studentUniSupervisor, setStudentSupervisor] = useState("");
   const [studentPriSupervisor, setStudentPriSupervisor] = useState("");
-  const [companyNames, setCompanyNames] = useState([{}]);
+  const [companyList, setCompanyList] = useState([{} as any]);
+
+  const colums = useMemo(
+    () => [
+      { field: "id", header: "ID", width: 260 },
+      { field: "حالة الطلب", header: "status", width: 260 },
+      { field: "اسم المنشاة", header: "company", width: 260 },
+    ],
+    []
+  );
 
   const getStudentInformation = async () => {
     const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
@@ -37,9 +48,33 @@ export default function DashboardScreen() {
         console.log(error);
       });
   };
+  const getStudentSubmitions = async () => {
+    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url = "https://localhost:8080/company/get-submition-lists/";
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        console.log(res.data);
+        if (res.data.length > 0) {
+          setIsLoading(false);
+          setCompanyList(res.data);
+        }
+      })
+      .catch((error: any) => {
+        alert(error);
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     getStudentInformation();
+    getStudentSubmitions();
   }, []);
 
   return (
@@ -137,21 +172,40 @@ export default function DashboardScreen() {
               p="15px"
               sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
             >
-              <Box sx={{ width: "75%", marginTop: 10, marginLeft: 12 }}>
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton animation="wave" />
-                <Skeleton animation={false} />
-              </Box>
-              <Box marginTop={-30}>
+              {loading ? (
+                <Box sx={{ width: "75%", marginTop: 10, marginLeft: 12 }}>
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton animation="wave" />
+                  <Skeleton animation={false} />
+                </Box>
+              ) : (
+                <>
+                  <Box sx={{ height: "33vh", width: "100%" }}>
+                    <DataGrid
+                      autoPageSize
+                      columns={colums}
+                      rows={companyList}
+                      getRowId={(row) => row.id + 1}
+                      sx={{
+                        fontSize: 20,
+                        margin: 2,
+                        boxShadow: 3,
+                      }}
+                    />
+                  </Box>
+                </>
+              )}
+
+              {/* <Box marginTop={3}>
                 <Typography color={"black"} variant="h5" fontWeight="600">
                   حالة الطلب
                 </Typography>
-              </Box>
+              </Box> */}
             </Box>
           </Box>
 

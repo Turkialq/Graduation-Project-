@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       JSON.parse(localStorage.getItem("authToken") || "{}")
   );
   const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
