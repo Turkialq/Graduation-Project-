@@ -40,5 +40,5 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 SSL_SERVER.listen(process.env.PORT, () => {
-  console.log(`secure server on port 8081`);
+  console.log(`secure server on port ${process.env.PORT}`);
 });
