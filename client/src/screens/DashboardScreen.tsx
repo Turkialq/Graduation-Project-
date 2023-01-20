@@ -19,7 +19,7 @@ export default function DashboardScreen() {
     const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "http://localhost:8080/student/student-dashboard-information";
+    const url = "https://localhost:8080/student/student-dashboard-information";
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,

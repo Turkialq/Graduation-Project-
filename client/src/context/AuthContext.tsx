@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       university,
     });
     console.log(JSON.parse(data));
-    const url = "http://localhost:8080/user/register-student";
+    const url = "https://localhost:8080/user/register-student";
     const headers = { "Content-Type": "application/json" };
     const response = await fetch(url, {
       method: "POST",
@@ -109,7 +109,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     console.log(JSON.parse(data));
 
     const url =
-      "http://localhost:8080/user/register-student-supervisor-university";
+      "https://localhost:8080/user/register-student-supervisor-university";
     const headers = { "Content-Type": "application/json" };
 
     const response = await fetch(url, {
@@ -136,7 +136,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     event.preventDefault();
 
     const url =
-      "http://localhost:8080/user/register-student-supervisor-company";
+      "https://localhost:8080/user/register-student-supervisor-company";
     const data = JSON.stringify({
       name,
       familyName,
@@ -179,13 +179,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     var url = "";
     switch (role) {
       case "student":
-        url = "http://localhost:8080/user/login-student";
+        url = "https://localhost:8080/user/login-student";
         break;
       case "uniSupervisor":
-        url = "http://localhost:8080/user/login-student-supervisor-university";
+        url = "https://localhost:8080/user/login-student-supervisor-university";
         break;
       case "companySupervisor":
-        url = "http://localhost:8080/user/login-student-supervisor-company";
+        url = "https://localhost:8080/user/login-student-supervisor-company";
         break;
 
       default:
@@ -208,7 +208,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
   const logout = async () => {
-    const url = "http://localhost:8080/user/logout";
+    const url = "https://localhost:8080/user/logout";
     const data = JSON.parse(localStorage.getItem("authToken")!)["refreshToken"];
     const realData = JSON.stringify(data);
 
@@ -228,7 +228,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const updateToken = async () => {
     console.log("Update token");
-    const url = "http://localhost:8080/user/refresh-token";
+    const url = "https://localhost:8080/user/refresh-token";
     const data = JSON.stringify({
       refresh: authToken.refreshToken,
     });
