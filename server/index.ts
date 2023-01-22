@@ -9,6 +9,7 @@ import bodyParser from "body-parser";
 import companyRouter from "./routes/companyRoutes";
 import userRouter from "./routes/userAuth";
 import studentRouter from "./routes/studentSupervisor";
+import notificationRouter from "./routes/notification";
 
 //** CONFIG **/
 const app: Application = express();
@@ -34,6 +35,7 @@ app.use(
 app.use("/user", userRouter);
 app.use("/student", studentRouter);
 app.use("/company", companyRouter);
+app.use("/notification", notificationRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from the back");

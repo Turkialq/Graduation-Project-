@@ -18,7 +18,7 @@ router.get(
       // change it to arabic --> better front-end format
       res.json(result);
     } catch (error) {
-      console.log(`COMPANY-LIST ERROR :${error}`);
+      // console.log(`COMPANY-LIST ERROR :${error}`);
       res.sendStatus(500);
     }
   }
@@ -62,14 +62,14 @@ router.get(
         res.send(null);
         return;
       }
-      console.log(companies);
-      console.log(submitions);
+      // console.log(companies);
+      // console.log(submitions);
       const result = [];
 
       for (let i = 0; i < submitions.length; i++) {
         for (let j = 0; j < submitions.length; j++) {
           if (submitions[i].companyID === companies[j].id) {
-            console.log(submitions[i], companies[j]);
+            // console.log(submitions[i], companies[j]);
             const temp = {
               id: companies[j].id,
               "اسم المنشاة": companies[j].name,
@@ -79,12 +79,12 @@ router.get(
           }
         }
       }
-      console.log(result);
+      // console.log(result);
 
       res.json(result);
     } catch (error) {
       res.sendStatus(500);
-      console.log(`ERROR IN SUBMITION LIST ${error}`);
+      // console.log(`ERROR IN SUBMITION LIST ${error}`);
     }
   }
 );
@@ -93,11 +93,8 @@ router.post(
   "/submit-company",
   authenticateToken,
   async (req: Request, res: Response) => {
-    console.log(req.body);
     const { firstName, lastName } = req.body.user;
-    console.log(firstName, lastName);
     const { companyName }: any = req.query;
-    console.log(companyName);
 
     try {
       const company = await prisma.company.findFirst({
@@ -105,26 +102,63 @@ router.post(
           name: companyName,
         },
       });
+
+      // console.log(`company : ${company?.id}`);
+
       const student = await prisma.student.findFirst({
         where: {
           firstName: firstName,
           lastName: lastName,
         },
       });
-      console.log(student);
-      console.log(company);
-      const submition = await prisma.submissions.create({
+
+      const studentUniversity = await prisma.university.findFirst({
+        where: {
+          id: student?.universityId,
+        },
+        select: {
+          name: true,
+        },
+      });
+
+      const companySupervisor = await prisma.companySupervisor.findFirst({
+        where: {
+          companyId: company?.id as any,
+        },
+      });
+
+      // console.log(`company supervisor ${companySupervisor?.id}`);
+
+      await prisma.submissions.create({
         data: {
           status: "تحت الاجراء",
           studentID: student!.id as any,
           companyID: company!.id as any,
         },
       });
+
+      await prisma.studentNotification.create({
+        data: {
+          studentID: student?.id as any,
+          title: `تقديم على بيئة العمل`,
+          subTitle: `${student?.firstName} قدم ملفة الى ${company?.name}`,
+        },
+      });
+
+      // await prisma.companySupervisorNotification.create({
+      //   data: {
+      //     studentID: { connect: { id: student?.id } } as any,
+      //     companySupervisorId: companySupervisor?.id as any,
+      //     title: "استلام ملف تقديم",
+      //     subTitle: `تم التقديم على الجهة من الطالب ${student?.firstName} من الجامعة :${studentUniversity?.name}`,
+      //   },
+      // });
+
       res.json("Submited");
-      console.log("Submited to a company");
-      console.log(submition);
+      // console.log("Submited to a company");
+      // console.log(submition);
     } catch (error) {
-      console.log(`COMPANY-LIST ERROR :${error}`);
+      // console.log(`COMPANY-LIST ERROR :${error}`);
       res.sendStatus(500);
     }
   }
@@ -228,7 +262,7 @@ router.post("/register-company", async (req: Request, res: Response) => {
     });
   } catch (error) {
     res.sendStatus(500);
-    console.log(error);
+    // console.log(error);
   }
   res.send("Added");
 });

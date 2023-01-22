@@ -22,7 +22,6 @@ router.get(
           gpa: true,
         },
       });
-      // console.log(`STUDENT_NAME:${student?.firstName}`);
 
       // now get the student supervisor info
       const studentSupervisor = await prisma.studentSupervisor.findUnique({
@@ -30,7 +29,7 @@ router.get(
           id: student?.supervisor.id as any,
         },
       });
-      console.log(`STUDENT_SUPER_NAME:${studentSupervisor?.name}`);
+      // console.log(`STUDENT_SUPER_NAME:${studentSupervisor?.name}`);
       // save all the results to an object
       const result = {
         studentFirstName: student?.firstName,

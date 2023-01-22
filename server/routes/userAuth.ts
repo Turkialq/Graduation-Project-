@@ -163,6 +163,7 @@ router.post(
 router.post(
   "/register-student-supervisor-company",
   async (req: Request, res: Response) => {
+    console.log(req.body);
     try {
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -174,6 +175,7 @@ router.post(
         password: hashedPassword,
         gender: req.body.gender,
         company: req.body.company,
+        major: req.body.major,
       };
 
       const company = await prisma.company.findFirst({
@@ -194,7 +196,8 @@ router.post(
           company: { connect: { id: company?.id } as any },
         },
       });
-      res.sendStatus(200);
+      console.log("company supervisor registered");
+      res.json("Registration complete");
     } catch (error) {
       console.log(error);
       res.status(500);

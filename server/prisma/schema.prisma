@@ -11,32 +11,33 @@ datasource db {
 }
 
 model Student {
-  id                  Int                @id @default(autoincrement())
-  firstName           String
-  lastName            String
-  fatherName          String
-  email               String
-  password            String
-  gender              String
-  major               String
-  phoneNumber         String
-  gpa                 String
-  interest            String
-  supervisor          StudentSupervisor  @relation(fields: [studentSupervisor], references: [id])
-  studentSupervisor   Int
-  companySupervisor   CompanySupervisor? @relation(fields: [companySupervisorId], references: [id])
-  companySupervisorId Int?
-  admin               UniversityAdmin    @relation(fields: [universityAdminId], references: [id])
-  universityAdminId   Int
-  company             Company?           @relation(fields: [companyId], references: [id])
-  companyId           Int?
-  university          University         @relation(fields: [universityId], references: [id])
-  universityId        Int
-  submitions          Submissions[]
-
-  weeklyStatus        WeeklyStatus?         @relation(fields: [weeklyStatusId], references: [id])
-  weeklyStatusId      Int?                  @unique
-  studentNotification studentNotification[]
+  id                            Int                             @id @default(autoincrement())
+  firstName                     String
+  lastName                      String
+  fatherName                    String
+  email                         String
+  password                      String
+  gender                        String
+  major                         String
+  phoneNumber                   String
+  gpa                           String
+  interest                      String
+  supervisor                    StudentSupervisor               @relation(fields: [studentSupervisor], references: [id])
+  studentSupervisor             Int
+  companySupervisor             CompanySupervisor?              @relation(fields: [companySupervisorId], references: [id])
+  companySupervisorId           Int?
+  admin                         UniversityAdmin                 @relation(fields: [universityAdminId], references: [id])
+  universityAdminId             Int
+  company                       Company?                        @relation(fields: [companyId], references: [id])
+  companyId                     Int?
+  university                    University                      @relation(fields: [universityId], references: [id])
+  universityId                  Int
+  submitions                    Submissions[]
+  weeklyStatus                  WeeklyStatus?                   @relation(fields: [weeklyStatusId], references: [id])
+  weeklyStatusId                Int?                            @unique
+  studentNotification           studentNotification[]
+  companySupervisorNotification companySupervisorNotification[]
+  studentSupervisorNotification studentSupervisorNotification[]
 }
 
 model StudentSupervisor {
@@ -133,6 +134,8 @@ model studentSupervisorNotification {
   subTitle            String
   studentSupervisor   StudentSupervisor @relation(fields: [studentSupervisorId], references: [id])
   studentSupervisorId Int
+  student             Student           @relation(fields: [studentID], references: [id])
+  studentID           Int
 }
 
 model companySupervisorNotification {
@@ -141,6 +144,8 @@ model companySupervisorNotification {
   subTitle            String
   companySupervisor   CompanySupervisor @relation(fields: [companySupervisorId], references: [id])
   companySupervisorId Int
+  student             Student           @relation(fields: [studentID], references: [id])
+  studentID           Int
 }
 
 model UsedTokens {
