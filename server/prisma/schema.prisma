@@ -34,38 +34,41 @@ model Student {
   universityId        Int
   submitions          Submissions[]
 
-  weeklyStatus   WeeklyStatus? @relation(fields: [weeklyStatusId], references: [id])
-  weeklyStatusId Int?          @unique
+  weeklyStatus        WeeklyStatus?         @relation(fields: [weeklyStatusId], references: [id])
+  weeklyStatusId      Int?                  @unique
+  studentNotification studentNotification[]
 }
 
 model StudentSupervisor {
-  id              Int             @id @default(autoincrement())
-  name            String
-  lastName        String
-  email           String
-  password        String
-  phoneNumber     String
-  gender          String
-  major           String
-  admin           UniversityAdmin @relation(fields: [universityAdmin], references: [id])
-  universityAdmin Int
-  weeklyStatus    WeeklyStatus?   @relation(fields: [weeklyStatusId], references: [id])
-  weeklyStatusId  Int?            @unique
-  Student         Student[]
+  id                            Int                             @id @default(autoincrement())
+  name                          String
+  lastName                      String
+  email                         String
+  password                      String
+  phoneNumber                   String
+  gender                        String
+  major                         String
+  admin                         UniversityAdmin                 @relation(fields: [universityAdmin], references: [id])
+  universityAdmin               Int
+  weeklyStatus                  WeeklyStatus?                   @relation(fields: [weeklyStatusId], references: [id])
+  weeklyStatusId                Int?                            @unique
+  Student                       Student[]
+  studentSupervisorNotification studentSupervisorNotification[]
 }
 
 model CompanySupervisor {
-  id          Int       @id @default(autoincrement())
-  name        String
-  lastName    String
-  email       String
-  phoneNumber String
-  password    String
-  gender      String
-  major       String
-  company     Company   @relation(fields: [companyId], references: [id])
-  companyId   Int
-  Student     Student[]
+  id                            Int                             @id @default(autoincrement())
+  name                          String
+  lastName                      String
+  email                         String
+  phoneNumber                   String
+  password                      String
+  gender                        String
+  major                         String
+  company                       Company                         @relation(fields: [companyId], references: [id])
+  companyId                     Int
+  Student                       Student[]
+  companySupervisorNotification companySupervisorNotification[]
 }
 
 model UniversityAdmin {
@@ -114,6 +117,30 @@ model WeeklyStatus {
   grande            Int
   Student           Student?
   StudentSupervisor StudentSupervisor?
+}
+
+model studentNotification {
+  id        Int     @id @default(autoincrement())
+  title     String
+  subTitle  String
+  student   Student @relation(fields: [studentID], references: [id])
+  studentID Int
+}
+
+model studentSupervisorNotification {
+  id                  Int               @id @default(autoincrement())
+  title               String
+  subTitle            String
+  studentSupervisor   StudentSupervisor @relation(fields: [studentSupervisorId], references: [id])
+  studentSupervisorId Int
+}
+
+model companySupervisorNotification {
+  id                  Int               @id @default(autoincrement())
+  title               String
+  subTitle            String
+  companySupervisor   CompanySupervisor @relation(fields: [companySupervisorId], references: [id])
+  companySupervisorId Int
 }
 
 model UsedTokens {
