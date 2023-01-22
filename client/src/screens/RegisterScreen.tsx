@@ -491,6 +491,9 @@ export default function Signup() {
                 <MenuItem value={"ادارة الاعمال"}>
                   الاتحاد السعودي للامن السيبراني و برمجة الدرونز
                 </MenuItem>
+                <MenuItem value={"الهيئة العامة للإحصاء"}>
+                  الهيئة العامة للإحصاء
+                </MenuItem>
               </Select>
             </>
           )}

@@ -1,10 +1,18 @@
 import { useState, useEffect, useMemo } from "react";
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import StatBox from "../components/StatBox";
 import Chart, { BarChart } from "../components/dashboard/chart";
 import { DataGrid } from "@mui/x-data-grid";
 import Skeleton from "@mui/material/Skeleton";
+import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import axios from "axios";
 
 export default function DashboardScreen() {
@@ -16,6 +24,7 @@ export default function DashboardScreen() {
   const [studentUniSupervisor, setStudentSupervisor] = useState("");
   const [studentPriSupervisor, setStudentPriSupervisor] = useState("");
   const [companyList, setCompanyList] = useState([{} as any]);
+  const [notifications, setNotifications] = useState([{} as any]);
 
   const colums = useMemo(
     () => [
@@ -48,6 +57,7 @@ export default function DashboardScreen() {
         console.log(error);
       });
   };
+
   const getStudentSubmitions = async () => {
     const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
       "acessToken"
@@ -72,9 +82,32 @@ export default function DashboardScreen() {
       });
   };
 
+  const getStudentNotifications = async () => {
+    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url =
+      "https://localhost:8080/notification/get-student-notifications/";
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        console.log(res.data);
+        setNotifications(res.data);
+      })
+      .catch((error: any) => {
+        alert(error);
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     getStudentInformation();
     getStudentSubmitions();
+    getStudentNotifications();
   }, []);
 
   return (
@@ -139,20 +172,54 @@ export default function DashboardScreen() {
             <StatBox
               icon={
                 <NotificationsActiveIcon
-                  sx={{ color: "black", fontSize: "26px", marginTop: 2 }}
+                  sx={{
+                    color: "black",
+                    fontSize: "26px",
+                    marginTop: 1,
+                    marginLeft: 26,
+                    marginBottom: 2,
+                  }}
                 />
               }
             />
-            <Box sx={{ width: 230, marginTop: 7 }}>
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton animation="wave" />
-              <Skeleton animation={false} />
-            </Box>
+            {loading ? (
+              <Box sx={{ width: 230, marginTop: 7 }}>
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+                <Skeleton animation="wave" />
+                <Skeleton animation={false} />
+              </Box>
+            ) : (
+              <Grid marginTop={4}>
+                <>
+                  {notifications.map((not) => {
+                    return (
+                      <ListItem
+                        sx={{ padding: 2, marginRight: -5 }}
+                        key={not.id}
+                        button
+                      >
+                        <ListItemText
+                          sx={{
+                            width: "50%",
+                            textAlign: "right",
+                          }}
+                          primary={`${not.title}`}
+                          secondary={`${not.subTitle}`}
+                        />
+                        <ListItemIcon sx={{ marginLeft: 2 }}>
+                          <RadioButtonCheckedIcon sx={{ color: "black" }} />
+                        </ListItemIcon>
+                      </ListItem>
+                    );
+                  })}
+                </>
+              </Grid>
+            )}
           </Box>
 
           {/* ROW 2 */}
