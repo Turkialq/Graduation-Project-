@@ -114,7 +114,7 @@ export default function CompanyListScreen() {
       <Box
         component={"div"}
         sx={{
-          height: 750,
+          height: 730,
           width: "81%",
           marginTop: 9,
 
