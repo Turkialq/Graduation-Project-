@@ -1,12 +1,21 @@
-import { useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { ImageConfig } from "./ImageConfig";
 import "/Users/turkialqahtani/Desktop/GP2/client/src/components/fileupload/drop-file-input.css";
+import axios from "axios";
+import { Button } from "@mui/material";
 
 export default function FileUpload(props: any) {
   const wrapperRef = useRef<any>(null);
 
   const [fileList, setFileList] = useState<any>([]);
+  const [button, setButton] = useState(true);
+
+  useEffect(() => {
+    if (fileList.length === 0) {
+      setButton(true);
+    }
+  }, [fileList.length]);
 
   const onDragEnter = () => wrapperRef.current.classList.add("dragover");
 
@@ -14,11 +23,38 @@ export default function FileUpload(props: any) {
 
   const onDrop = () => wrapperRef.current.classList.remove("dragover");
 
-  const onFileDrop = (e: any) => {
-    const newFile = e.target.files[0];
-    if (newFile) {
+  const handleUploadClick = () => {
+    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url = "https://localhost:8080/file/upload-task-file";
+    const headers = {
+      "Content-Type": "multipart/form-data",
+      authorization: "Bearer" + " " + acessToken,
+    };
+
+    if (!fileList) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append("files", fileList);
+    axios
+      .post(url, formData, { headers })
+      .then((res: any) => {
+        alert("file submited");
+      })
+      .catch((error: any) => {
+        alert(error);
+        // console.log(error);
+      });
+  };
+
+  const onFileDrop = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFile = e.target.files[0];
       const updatedList = [...fileList, newFile];
       setFileList(updatedList);
+      setButton(false);
       props.onFileChange(updatedList);
     }
   };
@@ -46,7 +82,12 @@ export default function FileUpload(props: any) {
       </div>
       {fileList.length > 0 ? (
         <div className="drop-file-preview">
-          <p className="drop-file-preview__title">Ready to upload</p>
+          <p
+            style={{ textAlign: "right" }}
+            className="drop-file-preview__title"
+          >
+            الملفات الجاهزة لي الرفع
+          </p>
           {fileList.map((item: any, index: any) => (
             <div key={index} className="drop-file-preview__item">
               <img
@@ -69,6 +110,24 @@ export default function FileUpload(props: any) {
           ))}
         </div>
       ) : null}
+      <Button
+        disabled={button}
+        fullWidth
+        variant="contained"
+        sx={{
+          mt: 3,
+          mb: 2,
+          backgroundColor: "#3C6255",
+          "&:hover": {
+            backgroundColor: "#86C8BC",
+          },
+        }}
+        onClick={() => {
+          handleUploadClick();
+        }}
+      >
+        ارفع الملف
+      </Button>
     </>
   );
 }

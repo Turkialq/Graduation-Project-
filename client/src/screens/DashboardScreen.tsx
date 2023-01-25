@@ -195,7 +195,7 @@ export default function DashboardScreen() {
                 <Skeleton animation={false} />
               </Box>
             ) : (
-              <Grid marginTop={4}>
+              <Grid marginTop={4} overflow="auto">
                 <>
                   {notifications.map((not) => {
                     return (
