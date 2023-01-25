@@ -29,8 +29,7 @@ router.get(
           id: student?.supervisor.id as any,
         },
       });
-      // console.log(`STUDENT_SUPER_NAME:${studentSupervisor?.name}`);
-      // save all the results to an object
+
       const result = {
         studentFirstName: student?.firstName,
         studentLastName: student?.lastName,

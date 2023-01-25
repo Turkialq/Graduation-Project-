@@ -12,12 +12,6 @@ router.get(
   async (req: Request, res: Response) => {
     const { firstName, lastName } = req.body.user;
 
-    // const page = parseInt(req.query.page as string);
-    // const limit = parseInt(req.query.limit as string);
-
-    // const startIndex = (page - 1) * limit;
-    // const endIndex = page * limit;
-
     try {
       const student = await prisma.student.findFirst({
         where: {
@@ -31,43 +25,6 @@ router.get(
           studentID: student?.id,
         },
       });
-
-      const numberOfNotification = await prisma.studentNotification.count({
-        where: { studentID: student?.id as any },
-      });
-
-      // const result = {
-      //   next: { page: page, limit: limit },
-      //   previous: {
-      //     page: page,
-      //     limit: limit,
-      //   },
-      //   results: {},
-      //   total: Math.ceil(numberOfNotification / limit),
-      // };
-
-      // if (endIndex < numberOfNotification)
-      //   result.next = {
-      //     page: page + 1,
-      //     limit: limit,
-      //   };
-
-      // if (startIndex > 0) {
-      //   result.previous = {
-      //     page: page - 1,
-      //     limit: limit,
-      //   };
-      // }
-
-      // result.results = await prisma.studentNotification.findMany({
-      //   where: { studentID: student?.id },
-      //   skip: startIndex,
-      //   take: limit,
-      //   select: {
-      //     title: true,
-      //     subTitle: true,
-      //   },
-      // });
 
       res.json(notifications);
     } catch (error) {

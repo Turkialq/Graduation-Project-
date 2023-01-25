@@ -10,10 +10,14 @@ import companyRouter from "./routes/companyRoutes";
 import userRouter from "./routes/userAuth";
 import studentRouter from "./routes/studentSupervisor";
 import notificationRouter from "./routes/notification";
+import taskRouter from "./routes/taskRoutes";
 
 //** CONFIG **/
 const app: Application = express();
 dotenv.config();
+const FILE_Directiry = path.resolve(
+  "/Users/turkialqahtani/Desktop/GP2/server/file-uploads"
+);
 
 //** SSL_SERVER **//
 const SSL_SERVER = https.createServer(
@@ -26,6 +30,7 @@ const SSL_SERVER = https.createServer(
 
 //** MIDDLEWARE **/
 app.use(bodyParser.json());
+app.use("/uploads", express.static(FILE_Directiry));
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -35,6 +40,7 @@ app.use(
 app.use("/user", userRouter);
 app.use("/student", studentRouter);
 app.use("/company", companyRouter);
+app.use("/tasks", taskRouter);
 app.use("/notification", notificationRouter);
 
 app.get("/", (req: Request, res: Response) => {
