@@ -21,4 +21,13 @@ router.post(
   }
 );
 
+// student supervisor route
+router.post(
+  "/create-student-task",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    res.send("ok");
+  }
+);
+
 export default router;
