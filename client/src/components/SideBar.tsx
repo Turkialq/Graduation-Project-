@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { IconButton, Box, Tooltip, Menu, MenuItem } from "@mui/material";
@@ -20,6 +20,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import SchoolIcon from "@mui/icons-material/School";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import AuthContext from "../context/AuthContext";
 
 const drawerWidth = "19%";
@@ -53,7 +54,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function SideBar() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const { logout }: any = useContext(AuthContext);
+  const { logout, userRole }: any = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -160,51 +161,104 @@ export default function SideBar() {
                 <ListItemText primary={"الصفحة الرئيسية"} />
               </ListItemButton>
             </ListItem>
+            {userRole === "student" ? (
+              <ListItem
+                key={"قائمة الشركات"}
+                disablePadding
+                onClick={() => {
+                  handleSideBarNavigationClicks("company lists");
+                }}
+              >
+                <ListItemButton sx={{ textAlign: "right" }}>
+                  <ListItemIcon>
+                    <ApartmentIcon sx={{ color: "#3C6255" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"قائمة الشركات"} />
+                </ListItemButton>
+              </ListItem>
+            ) : (
+              <ListItem
+                key={"قائمة الطلاب"}
+                disablePadding
+                onClick={() => {
+                  handleSideBarNavigationClicks("company lists");
+                }}
+              >
+                <ListItemButton sx={{ textAlign: "right" }}>
+                  <ListItemIcon>
+                    <PeopleAltIcon sx={{ color: "#3C6255" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"قائمة الطلاب"} />
+                </ListItemButton>
+              </ListItem>
+            )}
 
-            <ListItem
-              key={"قائمة الشركات"}
-              disablePadding
-              onClick={() => {
-                handleSideBarNavigationClicks("company lists");
-              }}
-            >
-              <ListItemButton sx={{ textAlign: "right" }}>
-                <ListItemIcon>
-                  <ApartmentIcon sx={{ color: "#3C6255" }} />
-                </ListItemIcon>
-                <ListItemText primary={"قائمة الشركات"} />
-              </ListItemButton>
-            </ListItem>
+            {userRole === "student" && (
+              <ListItem
+                key={"مقابلة شخصية"}
+                disablePadding
+                onClick={() => {
+                  handleSideBarNavigationClicks("interview");
+                }}
+              >
+                <ListItemButton sx={{ textAlign: "right" }}>
+                  <ListItemIcon>
+                    <ComputerIcon sx={{ color: "#3C6255" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"مقابلة شخصية"} />
+                </ListItemButton>
+              </ListItem>
+            )}
 
-            <ListItem
-              key={"مقابلة شخصية"}
-              disablePadding
-              onClick={() => {
-                handleSideBarNavigationClicks("interview");
-              }}
-            >
-              <ListItemButton sx={{ textAlign: "right" }}>
-                <ListItemIcon>
-                  <ComputerIcon sx={{ color: "#3C6255" }} />
-                </ListItemIcon>
-                <ListItemText primary={"مقابلة شخصية"} />
-              </ListItemButton>
-            </ListItem>
+            {userRole === "companySupervisor" && (
+              <ListItem
+                key={"مقابلة شخصية"}
+                disablePadding
+                onClick={() => {
+                  handleSideBarNavigationClicks("interview");
+                }}
+              >
+                <ListItemButton sx={{ textAlign: "right" }}>
+                  <ListItemIcon>
+                    <ComputerIcon sx={{ color: "#3C6255" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"مقابلة شخصية"} />
+                </ListItemButton>
+              </ListItem>
+            )}
+            {userRole === "student" && (
+              <ListItem
+                key={"المهام الاسبوعية"}
+                disablePadding
+                onClick={() => {
+                  handleSideBarNavigationClicks("weekly tasks");
+                }}
+              >
+                <ListItemButton sx={{ textAlign: "right" }}>
+                  <ListItemIcon>
+                    <AssignmentIcon sx={{ color: "#3C6255" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"المهام الاسبوعية"} />
+                </ListItemButton>
+              </ListItem>
+            )}
 
-            <ListItem
-              key={"المهام الاسبوعية"}
-              disablePadding
-              onClick={() => {
-                handleSideBarNavigationClicks("weekly tasks");
-              }}
-            >
-              <ListItemButton sx={{ textAlign: "right" }}>
-                <ListItemIcon>
-                  <AssignmentIcon sx={{ color: "#3C6255" }} />
-                </ListItemIcon>
-                <ListItemText primary={"المهام الاسبوعية"} />
-              </ListItemButton>
-            </ListItem>
+            {userRole === "uniSupervisor" && (
+              <ListItem
+                key={"المهام الاسبوعية"}
+                disablePadding
+                onClick={() => {
+                  handleSideBarNavigationClicks("weekly tasks");
+                }}
+              >
+                <ListItemButton sx={{ textAlign: "right" }}>
+                  <ListItemIcon>
+                    <AssignmentIcon sx={{ color: "#3C6255" }} />
+                  </ListItemIcon>
+                  <ListItemText primary={"المهام الاسبوعية"} />
+                </ListItemButton>
+              </ListItem>
+            )}
           </List>
           <Divider />
           <List>

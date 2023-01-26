@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
 import {
   Box,
   Grid,
@@ -15,6 +15,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import Skeleton from "@mui/material/Skeleton";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import axios from "axios";
+import AuthContext from "../context/AuthContext";
 
 export default function DashboardScreen() {
   const [loading, setIsLoading] = useState(true);
@@ -26,6 +27,7 @@ export default function DashboardScreen() {
   const [studentPriSupervisor, setStudentPriSupervisor] = useState("");
   const [companyList, setCompanyList] = useState([{} as any]);
   const [notifications, setNotifications] = useState([{} as any]);
+  const { userRole }: any = useContext(AuthContext);
 
   const colums = useMemo(
     () => [
@@ -104,12 +106,36 @@ export default function DashboardScreen() {
         console.log(error);
       });
   };
+  const getCompanySupervisorInformation = async () => {
+    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url = "https://localhost:8080/student/student-dashboard-information";
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        console.log(res.data);
+      })
+      .catch((error: any) => {
+        alert(error);
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
-    getStudentInformation();
-    getStudentSubmitions();
-    getStudentNotifications();
-  }, []);
+    if (userRole === "student") {
+      getStudentInformation();
+      getStudentSubmitions();
+      getStudentNotifications();
+    }
+    // } else if (userRole === "companySupervisor") {
+    // } else {
+    // }
+  }, [userRole]);
 
   return (
     <>

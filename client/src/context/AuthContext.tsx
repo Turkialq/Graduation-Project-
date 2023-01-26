@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -21,14 +21,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.getItem("authToken") &&
       JSON.stringify(localStorage.getItem("authToken") || "{}");
   });
-
   const [user, setUser] = useState<any>(
     localStorage.getItem("authToken") &&
       JSON.parse(localStorage.getItem("authToken") || "{}")
   );
+  const [userRole, setUserRole] = useState("" || null);
   const [loading, setLoading] = useState(true);
-
   const navigate = useNavigate();
+  const Location = useLocation();
+
+  useEffect(() => {
+    if (Location.pathname === "/" || Location.pathname === "/register") {
+      return;
+    } else {
+      const role = JSON.parse(localStorage.getItem("authToken")!)["role"];
+      setUserRole(role);
+    }
+  });
 
   useEffect(() => {
     const fiveMinutes = 1000 * 60 * 5;
@@ -252,7 +261,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const contextData = {
-    user: user,
+    userRole: userRole,
     loginUser: loginUser,
     logout,
     registerStudent: registerStudent,
