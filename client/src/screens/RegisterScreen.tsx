@@ -65,6 +65,7 @@ export default function Signup() {
   const handleUniversity = (event: SelectChangeEvent) => {
     setUniversity(event.target.value as string);
   };
+
   const handleCompany = (event: SelectChangeEvent) => {
     setCompany(event.target.value as string);
   };
@@ -121,6 +122,7 @@ export default function Signup() {
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
+
   const MenuProps = {
     PaperProps: {
       style: {
@@ -129,6 +131,7 @@ export default function Signup() {
       },
     },
   };
+
   return (
     <Grid>
       <Paper
@@ -144,16 +147,13 @@ export default function Signup() {
           <Avatar style={{ backgroundColor: "#3C6255", marginLeft: 400 }}>
             <AddCircleOutlineOutlinedIcon />
           </Avatar>
-          <h2 style={{ marginLeft: 350 }}>انشاء حساب</h2>
+          <h3 style={{ marginLeft: 350, marginTop: 4 }}>انشاء حساب</h3>
         </Grid>
         <form onSubmit={handleSubmit}>
           <FormControl
             component="fieldset"
             style={{ marginTop: 10, textAlign: "right", width: "100%" }}
           >
-            <FormLabel component="legend" color="primary">
-              مهنة
-            </FormLabel>
             <RadioGroup
               dir="rtl"
               name="role"

@@ -27,6 +27,7 @@ export default function DashboardScreen() {
   const [studentPriSupervisor, setStudentPriSupervisor] = useState("");
   const [companyList, setCompanyList] = useState([{} as any]);
   const [notifications, setNotifications] = useState([{} as any]);
+  const [companyName, setCompanyName] = useState("");
   const { userRole }: any = useContext(AuthContext);
 
   const colums = useMemo(
@@ -106,11 +107,35 @@ export default function DashboardScreen() {
         console.log(error);
       });
   };
+
   const getCompanySupervisorInformation = async () => {
     const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "https://localhost:8080/student/student-dashboard-information";
+    const url =
+      "https://localhost:8080/supervisor/company-supervisor-dashboard-information";
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        console.log(res.data);
+        setUserName(res.data.firstName + " " + res.data.lastName);
+        setCompanyName(res.data.companyName);
+      })
+      .catch((error: any) => {
+        alert(error);
+        console.log(error);
+      });
+  };
+
+  const getCompanySupervisorSubmitions = async () => {
+    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url = "https://localhost:8080/submition/get-student-list-submitions/";
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,
@@ -126,15 +151,38 @@ export default function DashboardScreen() {
       });
   };
 
+  const getCompanySupervisorNotifications = async () => {
+    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url =
+      "https://localhost:8080/notification/get-student-notifications/";
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        console.log(res.data);
+        setNotifications(res.data);
+      })
+      .catch((error: any) => {
+        alert(error);
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     if (userRole === "student") {
       getStudentInformation();
       getStudentSubmitions();
       getStudentNotifications();
     }
-    // } else if (userRole === "companySupervisor") {
-    // } else {
-    // }
+    if (userRole === "companySupervisor") {
+      getCompanySupervisorInformation();
+      getCompanySupervisorSubmitions();
+    }
   }, [userRole]);
 
   return (
@@ -149,45 +197,81 @@ export default function DashboardScreen() {
           sx={{ marginTop: 10 }}
         >
           {/* ROW 1 */}
-          <Box
-            component="div"
-            gridColumn="span 9"
-            gridRow="span 1"
-            display="flex"
-            justifyContent="flex-end"
-            sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
-          >
-            <Box padding={2} marginRight={12}>
-              <Skeleton variant="circular" width={80} height={80} />
+          {userRole === "student" && (
+            <Box
+              component="div"
+              gridColumn="span 9"
+              gridRow="span 1"
+              display="flex"
+              justifyContent="flex-end"
+              sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
+            >
+              <Box padding={2} marginRight={12}>
+                <Skeleton variant="circular" width={80} height={80} />
+              </Box>
+              <Box width={"45%"} marginLeft={34}>
+                <Typography
+                  marginLeft={15}
+                  marginTop={2}
+                  color={"black"}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  اسم الطالب: {userName}
+                </Typography>
+                <Typography
+                  marginLeft={15}
+                  color={"black"}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  الجامعة : {userUniveristy}
+                </Typography>
+                <Typography
+                  marginLeft={22}
+                  color={"black"}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  المعدل التراكمي: {studentGPA}
+                </Typography>
+              </Box>
             </Box>
-            <Box width={"45%"} marginLeft={34}>
-              <Typography
-                marginLeft={15}
-                marginTop={2}
-                color={"black"}
-                variant="h5"
-                fontWeight="600"
-              >
-                اسم الطالب: {userName}
-              </Typography>
-              <Typography
-                marginLeft={15}
-                color={"black"}
-                variant="h5"
-                fontWeight="600"
-              >
-                الجامعة : {userUniveristy}
-              </Typography>
-              <Typography
-                marginLeft={22}
-                color={"black"}
-                variant="h5"
-                fontWeight="600"
-              >
-                المعدل التراكمي: {studentGPA}
-              </Typography>
+          )}
+          {userRole === "companySupervisor" && (
+            <Box
+              component="div"
+              gridColumn="span 9"
+              gridRow="span 1"
+              display="flex"
+              justifyContent="flex-end"
+              sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
+            >
+              <Box padding={2} marginRight={12}>
+                <Skeleton variant="circular" width={80} height={80} />
+              </Box>
+              <Box width={"45%"} marginLeft={34}>
+                <Typography
+                  marginLeft={10}
+                  marginTop={2}
+                  color={"black"}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  اسم مسئول العمل: {userName}
+                </Typography>
+                <Typography
+                  marginLeft={10}
+                  marginTop={1}
+                  color={"black"}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  بيئة العمل : {companyName}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          )}
 
           <Box
             component="div"

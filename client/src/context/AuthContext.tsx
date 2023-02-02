@@ -179,12 +179,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     role: string
   ) => {
     event.preventDefault();
-    console.log(role);
+
     const data = JSON.stringify({
       email,
       password,
       role,
     });
+
     const headers = { "Content-Type": "application/json" };
     var url = "";
     switch (role) {

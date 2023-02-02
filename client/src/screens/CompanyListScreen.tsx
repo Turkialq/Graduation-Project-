@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, forwardRef } from "react";
+import { useEffect, useMemo, useState, forwardRef, useContext } from "react";
 import axios from "axios";
 import { Box, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -9,6 +9,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import AuthContext from "../context/AuthContext";
 
 type companyList = {
   field: string;
@@ -26,6 +27,7 @@ export default function CompanyListScreen() {
   const [selectedCompanyType, setSelectedCompanyType] = useState("");
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
+  const { userRole }: any = useContext(AuthContext);
 
   const colums = useMemo(
     () => [
@@ -101,7 +103,25 @@ export default function CompanyListScreen() {
       })
       .catch((error: any) => {
         alert(error);
-        // console.log(error);
+      });
+  };
+
+  const getstudentList = async () => {
+    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url = "https://localhost:8080/company/get-submition-lists/";
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        console.log(res.data);
+      })
+      .catch((error: any) => {
+        alert(error);
       });
   };
 

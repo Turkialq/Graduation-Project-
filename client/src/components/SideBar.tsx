@@ -80,6 +80,11 @@ export default function SideBar() {
       case "profile":
         navigate("/profile");
         break;
+      case "student-submitions":
+        navigate("/student-submitions");
+        break;
+
+      //student list
 
       default:
         break;
@@ -161,7 +166,7 @@ export default function SideBar() {
                 <ListItemText primary={"الصفحة الرئيسية"} />
               </ListItemButton>
             </ListItem>
-            {userRole === "student" ? (
+            {userRole === "student" && (
               <ListItem
                 key={"قائمة الشركات"}
                 disablePadding
@@ -176,19 +181,20 @@ export default function SideBar() {
                   <ListItemText primary={"قائمة الشركات"} />
                 </ListItemButton>
               </ListItem>
-            ) : (
+            )}
+            {userRole === "companySupervisor" && (
               <ListItem
-                key={"قائمة الطلاب"}
+                key={"قائمة الطلبات"}
                 disablePadding
                 onClick={() => {
-                  handleSideBarNavigationClicks("company lists");
+                  handleSideBarNavigationClicks("student-submitions");
                 }}
               >
                 <ListItemButton sx={{ textAlign: "right" }}>
                   <ListItemIcon>
                     <PeopleAltIcon sx={{ color: "#3C6255" }} />
                   </ListItemIcon>
-                  <ListItemText primary={"قائمة الطلاب"} />
+                  <ListItemText primary={"قائمة الطلبات"} />
                 </ListItemButton>
               </ListItem>
             )}
