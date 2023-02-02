@@ -9,10 +9,14 @@ router.get(
   "/student-dashboard-information",
   authenticateToken,
   async (req: Request, res: Response) => {
-    const { firstName, lastName } = req.body;
+    const { firstName, lastName } = req.body.user;
+
     try {
       const student = await prisma.student.findFirst({
-        where: { firstName: firstName, lastName: lastName },
+        where: {
+          firstName: firstName,
+          lastName: lastName,
+        },
         select: {
           firstName: true,
           lastName: true,
@@ -22,6 +26,8 @@ router.get(
           gpa: true,
         },
       });
+
+      console.log("STUDENT INFO", student);
 
       // now get the student supervisor info
       const studentSupervisor = await prisma.studentSupervisor.findUnique({

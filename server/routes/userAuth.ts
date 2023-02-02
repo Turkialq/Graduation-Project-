@@ -71,6 +71,7 @@ export const authenticateToken = (
 // have to get the other tables to make the student object
 // such as university, univisity supervisor, company supervisor etc..
 router.post("/register-student", async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -208,7 +209,7 @@ router.post(
 router.post("/login-student", async (req: Request, res: Response) => {
   try {
     const userInfo = {
-      email: req.body.name,
+      email: req.body.email,
       password: req.body.password,
       role: req.body.role,
     };

@@ -109,7 +109,7 @@ model Submissions {
   student          Student  @relation(fields: [studentID], references: [id])
   studentID        Int
   company          Company  @relation(fields: [companyID], references: [id])
-  companyID        Int      @unique
+  companyID        Int
 }
 
 model WeeklyTasks {
