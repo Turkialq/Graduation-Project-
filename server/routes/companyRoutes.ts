@@ -1,6 +1,6 @@
 // submit to company
 // get company list
-// company status
+
 import express, { Request, Response, Router } from "express";
 import { PrismaClient } from "@prisma/client";
 import { authenticateToken } from "./userAuth";

@@ -46,7 +46,29 @@ router.get(
   "/get-company-supervisor-notifications",
   authenticateToken,
   async (req: Request, res: Response) => {
-    res.json("OK");
+    const { name, lastName } = req.body.user;
+
+    try {
+      const companySupervisor = await prisma.companySupervisor.findFirst({
+        where: {
+          name: name,
+          lastName: lastName,
+        },
+      });
+
+      const notifications = await prisma.companySupervisorNotification.findMany(
+        {
+          where: {
+            companySupervisorId: companySupervisor?.id,
+          },
+        }
+      );
+
+      res.json(notifications);
+    } catch (error) {
+      console.log(`error from student notification: ${error}`);
+      res.sendStatus(500);
+    }
   }
 );
 //get the (title & subtitle) and look for them to delete
