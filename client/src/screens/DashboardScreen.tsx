@@ -11,7 +11,7 @@ import {
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import StatBox from "../components/StatBox";
 import Chart, { BarChart } from "../components/dashboard/chart";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Skeleton from "@mui/material/Skeleton";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import axios from "axios";
@@ -21,13 +21,16 @@ export default function DashboardScreen() {
   const [loading, setIsLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [userUniveristy, setUserUniversity] = useState("");
-  const [userWorkPlace, setUserWorkPlace] = useState("");
+
   const [studentGPA, setStudentGPA] = useState("");
   const [studentUniSupervisor, setStudentSupervisor] = useState("");
-  const [studentPriSupervisor, setStudentPriSupervisor] = useState("");
+
   const [companyList, setCompanyList] = useState([{} as any]);
-  const [notifications, setNotifications] = useState([{} as any]);
   const [companyName, setCompanyName] = useState("");
+
+  const [acceptedStudent, setAcceptedStudent] = useState([{} as any]);
+  const [notifications, setNotifications] = useState([{} as any]);
+
   const { userRole }: any = useContext(AuthContext);
 
   const colums = useMemo(
@@ -35,6 +38,18 @@ export default function DashboardScreen() {
       { field: "id", header: "ID", width: 260 },
       { field: "حالة الطلب", header: "status", width: 260 },
       { field: "اسم المنشاة", header: "company", width: 260 },
+    ],
+    []
+  );
+
+  const superVisorColums = useMemo(
+    () => [
+      { field: "id", header: "ID", width: 140 },
+      { field: "اسم الطالب", header: "اسم الطالب", width: 140 },
+      { field: "البريد الاكتروني", header: "البريد الاكتروني", width: 140 },
+      { field: "التخصص", header: "status", width: 140 },
+      { field: "الجامعة", header: "company", width: 140 },
+      { field: "لمعدل التراكمي", header: "لمعدل التراكمي", width: 140 },
     ],
     []
   );
@@ -55,6 +70,57 @@ export default function DashboardScreen() {
         setStudentGPA(res.data.studentGPA);
         setUserUniversity(res.data.studentUniversity);
         setStudentSupervisor(res.data.studentUniSupervisor);
+      })
+      .catch((error: any) => {
+        alert(error);
+        console.log(error);
+      });
+  };
+
+  const getCompanySupervisorInformation = async () => {
+    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url =
+      "https://localhost:8080/supervisor/company-supervisor-dashboard-information";
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        console.log(res.data);
+        setUserName(res.data.firstName + " " + res.data.lastName);
+        setCompanyName(res.data.companyName);
+      })
+      .catch((error: any) => {
+        alert(error);
+        console.log(error);
+      });
+  };
+
+  const getUserNotifications = async () => {
+    var url = "";
+    if (userRole === "student") {
+      url = "https://localhost:8080/notification/get-student-notifications/";
+    } else if (userRole === "companySupervisor") {
+      url =
+        "https://localhost:8080/notification/get-company-supervisor-notifications/";
+    }
+    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        setIsLoading(false);
+        console.log(res.data);
+        setNotifications(res.data);
       })
       .catch((error: any) => {
         alert(error);
@@ -86,12 +152,11 @@ export default function DashboardScreen() {
       });
   };
 
-  const getStudentNotifications = async () => {
+  const getAccpetedStudent = async () => {
     const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url =
-      "https://localhost:8080/notification/get-student-notifications/";
+    const url = "https://localhost:8080/submition/get-accpeted-student/";
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,
@@ -100,72 +165,13 @@ export default function DashboardScreen() {
       .get(url, { headers })
       .then((res: any) => {
         console.log(res.data);
-        setNotifications(res.data);
-      })
-      .catch((error: any) => {
-        alert(error);
-        console.log(error);
-      });
-  };
-
-  const getCompanySupervisorInformation = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
-      "acessToken"
-    ];
-    const url =
-      "https://localhost:8080/supervisor/company-supervisor-dashboard-information";
-    const headers = {
-      "Content-Type": "application/json",
-      authorization: "Bearer" + " " + acessToken,
-    };
-    axios
-      .get(url, { headers })
-      .then((res: any) => {
-        console.log(res.data);
-        setUserName(res.data.firstName + " " + res.data.lastName);
-        setCompanyName(res.data.companyName);
-      })
-      .catch((error: any) => {
-        alert(error);
-        console.log(error);
-      });
-  };
-
-  const getCompanySupervisorSubmitions = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
-      "acessToken"
-    ];
-    const url = "https://localhost:8080/submition/get-student-list-submitions/";
-    const headers = {
-      "Content-Type": "application/json",
-      authorization: "Bearer" + " " + acessToken,
-    };
-    axios
-      .get(url, { headers })
-      .then((res: any) => {
-        console.log(res.data);
-      })
-      .catch((error: any) => {
-        alert(error);
-        console.log(error);
-      });
-  };
-
-  const getCompanySupervisorNotifications = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
-      "acessToken"
-    ];
-    const url =
-      "https://localhost:8080/notification/get-student-notifications/";
-    const headers = {
-      "Content-Type": "application/json",
-      authorization: "Bearer" + " " + acessToken,
-    };
-    axios
-      .get(url, { headers })
-      .then((res: any) => {
-        console.log(res.data);
-        setNotifications(res.data);
+        if (res.data.length > 0) {
+          setIsLoading(false);
+          setAcceptedStudent(
+            res.data.filter((object: any) => JSON.stringify(object) !== "{}")
+          );
+          console.log(acceptedStudent);
+        }
       })
       .catch((error: any) => {
         alert(error);
@@ -177,11 +183,12 @@ export default function DashboardScreen() {
     if (userRole === "student") {
       getStudentInformation();
       getStudentSubmitions();
-      getStudentNotifications();
+      getUserNotifications();
     }
     if (userRole === "companySupervisor") {
       getCompanySupervisorInformation();
-      getCompanySupervisorSubmitions();
+      getUserNotifications();
+      getAccpetedStudent();
     }
   }, [userRole]);
 
@@ -189,6 +196,7 @@ export default function DashboardScreen() {
     <>
       <Box marginLeft={2} marginTop={10} sx={{ backgroundColor: "#EFF5F5" }}>
         {/* GRID & CHARTS */}
+
         <Box
           display="grid"
           gridTemplateColumns="repeat(15, 1fr)"
@@ -197,6 +205,7 @@ export default function DashboardScreen() {
           sx={{ marginTop: 10 }}
         >
           {/* ROW 1 */}
+
           {userRole === "student" && (
             <Box
               component="div"
@@ -272,66 +281,128 @@ export default function DashboardScreen() {
               </Box>
             </Box>
           )}
-
-          <Box
-            component="div"
-            gridColumn="span 3"
-            gridRow="span 3"
-            display="flex"
-            sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
-          >
-            <StatBox
-              icon={
-                <NotificationsActiveIcon
-                  sx={{
-                    color: "black",
-                    fontSize: "26px",
-                    marginTop: 1,
-                    marginLeft: 26,
-                    marginBottom: 2,
-                  }}
-                />
-              }
-            />
-            {loading ? (
-              <Box sx={{ width: 230, marginTop: 7 }}>
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton />
-                <Skeleton animation="wave" />
-                <Skeleton animation={false} />
-              </Box>
-            ) : (
-              <Grid marginTop={4} overflow="auto">
-                <>
-                  {notifications.map((not) => {
-                    return (
-                      <ListItem
-                        sx={{ padding: 2, marginRight: -5 }}
-                        key={not.id}
-                        button
-                      >
-                        <ListItemText
-                          sx={{
-                            width: "50%",
-                            textAlign: "right",
-                          }}
-                          primary={`${not.title}`}
-                          secondary={`${not.subTitle}`}
-                        />
-                        <ListItemIcon sx={{ marginLeft: 2 }}>
-                          <RadioButtonCheckedIcon sx={{ color: "black" }} />
-                        </ListItemIcon>
-                      </ListItem>
-                    );
-                  })}
-                </>
-              </Grid>
-            )}
-          </Box>
+          {userRole === "student" && (
+            <Box
+              component="div"
+              gridColumn="span 3"
+              gridRow="span 3"
+              display="flex"
+              sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
+            >
+              <StatBox
+                icon={
+                  <NotificationsActiveIcon
+                    sx={{
+                      color: "black",
+                      fontSize: "26px",
+                      marginTop: 1,
+                      marginLeft: 26,
+                      marginBottom: 2,
+                    }}
+                  />
+                }
+              />
+              {loading ? (
+                <Box sx={{ width: 230, marginTop: 7 }}>
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton animation="wave" />
+                  <Skeleton animation={false} />
+                </Box>
+              ) : (
+                <Grid marginTop={4} overflow="auto">
+                  <>
+                    {notifications.map((not) => {
+                      return (
+                        <ListItem
+                          sx={{ padding: 2, marginRight: -5 }}
+                          key={not.id}
+                          button
+                        >
+                          <ListItemText
+                            sx={{
+                              width: "50%",
+                              textAlign: "right",
+                            }}
+                            primary={`${not.title}`}
+                            secondary={`${not.subTitle}`}
+                          />
+                          <ListItemIcon sx={{ marginLeft: 2 }}>
+                            <RadioButtonCheckedIcon sx={{ color: "black" }} />
+                          </ListItemIcon>
+                        </ListItem>
+                      );
+                    })}
+                  </>
+                </Grid>
+              )}
+            </Box>
+          )}
+          {userRole === "companySupervisor" && (
+            <Box
+              component="div"
+              gridColumn="span 3"
+              gridRow="span 3"
+              display="flex"
+              sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
+            >
+              <StatBox
+                icon={
+                  <NotificationsActiveIcon
+                    sx={{
+                      color: "black",
+                      fontSize: "26px",
+                      marginTop: 1,
+                      marginLeft: 26,
+                      marginBottom: 2,
+                    }}
+                  />
+                }
+              />
+              {loading ? (
+                <Box sx={{ width: 230, marginTop: 7 }}>
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton animation="wave" />
+                  <Skeleton animation={false} />
+                </Box>
+              ) : (
+                <Grid marginTop={4} overflow="auto">
+                  <>
+                    {notifications.map((not) => {
+                      return (
+                        <ListItem
+                          sx={{ padding: 2, marginRight: 4 }}
+                          key={not.id}
+                          button
+                        >
+                          <ListItemText
+                            sx={{
+                              width: "50%",
+                              textAlign: "right",
+                            }}
+                            primary={`${not.title}`}
+                            secondary={`${not.subTitle}`}
+                          />
+                          <ListItemIcon sx={{ marginLeft: 2 }}>
+                            <RadioButtonCheckedIcon sx={{ color: "black" }} />
+                          </ListItemIcon>
+                        </ListItem>
+                      );
+                    })}
+                  </>
+                </Grid>
+              )}
+            </Box>
+          )}
 
           {/* ROW 2 */}
           <Box
@@ -350,7 +421,7 @@ export default function DashboardScreen() {
               p="15px"
               sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
             >
-              {loading ? (
+              {loading && (
                 <Box sx={{ width: "75%", marginTop: 10, marginLeft: 12 }}>
                   <Skeleton />
                   <Skeleton />
@@ -361,7 +432,9 @@ export default function DashboardScreen() {
                   <Skeleton animation="wave" />
                   <Skeleton animation={false} />
                 </Box>
-              ) : (
+              )}
+
+              {userRole === "student" && (
                 <>
                   <Box sx={{ height: "33vh", width: "100%" }}>
                     <DataGrid
@@ -379,11 +452,23 @@ export default function DashboardScreen() {
                 </>
               )}
 
-              {/* <Box marginTop={3}>
-                <Typography color={"black"} variant="h5" fontWeight="600">
-                  حالة الطلب
-                </Typography>
-              </Box> */}
+              {userRole === "companySupervisor" && (
+                <>
+                  <Box sx={{ height: "33vh", width: "100%" }}>
+                    <DataGrid
+                      autoPageSize
+                      columns={superVisorColums}
+                      rows={acceptedStudent}
+                      getRowId={(row) => row.id + 1}
+                      sx={{
+                        fontSize: 20,
+                        margin: 2,
+                        boxShadow: 3,
+                      }}
+                    />
+                  </Box>
+                </>
+              )}
             </Box>
           </Box>
 

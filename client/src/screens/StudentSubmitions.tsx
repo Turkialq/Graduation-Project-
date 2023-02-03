@@ -156,6 +156,7 @@ export default function StudentSubmitionList() {
             </Alert>
           </Snackbar>
         </>
+
         <DataGrid
           onRowClick={(e: any) => {
             handleOpenDialogInformation(e.row.id);
