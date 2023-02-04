@@ -177,10 +177,19 @@ export default function StudentSubmitionList() {
       >
         <DialogTitle>معلومات المتقدم</DialogTitle>
         <DialogContent>
-          <DialogContentText> اسم المتقدم : {student}</DialogContentText>
-          <DialogContentText>المعدل التراكمي : {gpa}</DialogContentText>
-          <DialogContentText>التخصص : {major}</DialogContentText>
-          <DialogContentText>الجامعة : {university}</DialogContentText>
+          <DialogContentText sx={{ color: "black" }}>
+            {" "}
+            اسم المتقدم : {student}
+          </DialogContentText>
+          <DialogContentText sx={{ color: "black" }}>
+            المعدل التراكمي : {gpa}
+          </DialogContentText>
+          <DialogContentText sx={{ color: "black" }}>
+            التخصص : {major}
+          </DialogContentText>
+          <DialogContentText sx={{ color: "black" }}>
+            الجامعة : {university}
+          </DialogContentText>
           <Box></Box>
         </DialogContent>
         <DialogActions>

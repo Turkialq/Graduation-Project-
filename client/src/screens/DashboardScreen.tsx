@@ -44,12 +44,12 @@ export default function DashboardScreen() {
 
   const superVisorColums = useMemo(
     () => [
-      { field: "id", header: "ID", width: 140 },
+      { field: "id", header: "ID", width: 50 },
       { field: "اسم الطالب", header: "اسم الطالب", width: 140 },
-      { field: "البريد الاكتروني", header: "البريد الاكتروني", width: 140 },
-      { field: "التخصص", header: "status", width: 140 },
+      { field: "البريد الاكتروني", header: "البريد الاكتروني", width: 180 },
+      { field: "التخصص", header: "status", width: 100 },
       { field: "الجامعة", header: "company", width: 140 },
-      { field: "لمعدل التراكمي", header: "لمعدل التراكمي", width: 140 },
+      { field: "المعدل التراكمي", header: "لمعدل التراكمي", width: 140 },
     ],
     []
   );
@@ -119,7 +119,6 @@ export default function DashboardScreen() {
       .get(url, { headers })
       .then((res: any) => {
         setIsLoading(false);
-        console.log(res.data);
         setNotifications(res.data);
       })
       .catch((error: any) => {
@@ -454,7 +453,7 @@ export default function DashboardScreen() {
 
               {userRole === "companySupervisor" && (
                 <>
-                  <Box sx={{ height: "33vh", width: "100%" }}>
+                  <Box sx={{ height: "33vh", width: "100%", direction: "rtl" }}>
                     <DataGrid
                       autoPageSize
                       columns={superVisorColums}
@@ -475,14 +474,15 @@ export default function DashboardScreen() {
           {/* ROW 3 */}
           <Box
             component="div"
-            gridColumn="span 8"
+            gridColumn="span 12"
             gridRow="span 2"
             p="10px"
             sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
           >
-            <Chart />
+            {/* <Chart /> */}
+            <BarChart />
           </Box>
-          <Box
+          {/* <Box
             component="div"
             gridColumn="span 4"
             gridRow="span 2"
@@ -490,7 +490,7 @@ export default function DashboardScreen() {
             sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
           >
             <BarChart />
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     </>

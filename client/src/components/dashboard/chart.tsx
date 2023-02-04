@@ -14,7 +14,7 @@ export const options = {
   plugins: {
     title: {
       display: true,
-      text: "Chart.js Bar Chart - Stacked",
+      text: "الجهات الاكثر على الطلب",
     },
   },
   responsive: true,
@@ -31,25 +31,28 @@ export const options = {
     },
   },
 };
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+const labels = [
+  "ارامكو السعودية",
+  "سدايا",
+  "بنك الراجحي",
+  "وزارة التعليم",
+  "مكتبة جرير",
+  "الهيئة العامة للترفيه",
+  "صندوق التنمية العقاري السعودي",
+];
 
 const dataOne = {
   labels,
   datasets: [
     {
-      label: "Dataset 1",
+      label: "النساء",
       data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
       backgroundColor: "rgb(255, 99, 132)",
       stack: "Stack 0",
     },
+
     {
-      label: "Dataset 2",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      backgroundColor: "rgb(75, 192, 192)",
-      stack: "Stack 0",
-    },
-    {
-      label: "Dataset 3",
+      label: "الرجال",
       data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
       backgroundColor: "rgb(53, 162, 235)",
       stack: "Stack 1",
@@ -98,7 +101,7 @@ export default function lineChart() {
 export function BarChart() {
   return (
     <>
-      <Bar options={options} data={dataOne} />
+      <Bar width="650%" options={options} data={dataOne} />
     </>
   );
 }

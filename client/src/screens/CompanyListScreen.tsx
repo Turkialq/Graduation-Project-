@@ -172,13 +172,22 @@ export default function CompanyListScreen() {
           sx={{ fontSize: 20, margin: 2 }}
         />
       </Box>
-      <Dialog fullWidth open={open} onClose={() => setOpen(false)}>
+      <Dialog
+        fullWidth
+        open={open}
+        onClose={() => setOpen(false)}
+        sx={{ direction: "rtl" }}
+      >
         <DialogTitle>تقديم على الجهة</DialogTitle>
         <DialogContent>
-          <DialogContentText>{selectedCompanyName}</DialogContentText>
-          <DialogContentText>{selectedCompanyField}</DialogContentText>
-          <DialogContentText>{selectedCompanyType}</DialogContentText>
-          <DialogContentText>{selectedCompanyLocation}</DialogContentText>
+          <DialogContentText>الجهة : {selectedCompanyName}</DialogContentText>
+          <DialogContentText>
+            الاختصاص : {selectedCompanyField}
+          </DialogContentText>
+          <DialogContentText>القطاع : {selectedCompanyType}</DialogContentText>
+          <DialogContentText>
+            المناطق : {selectedCompanyLocation}
+          </DialogContentText>
           <Box></Box>
         </DialogContent>
         <DialogActions>
