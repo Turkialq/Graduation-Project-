@@ -113,7 +113,7 @@ router.get(
           "البريد الاكتروني": student?.email,
           الجامعة: univeristy?.name,
           التخصص: student?.major,
-          "لمعدل التراكمي": student?.gpa,
+          "المعدل التراكمي": student?.gpa,
           "اسم الطالب": student?.firstName + " " + student?.lastName,
         });
       }
