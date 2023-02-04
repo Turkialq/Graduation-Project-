@@ -1,6 +1,7 @@
 import express, { Request, Response, Application } from "express";
 import cors from "cors";
 import https from "https";
+import { Server } from "socket.io";
 import fs from "fs";
 import path from "path";
 import * as dotenv from "dotenv";
@@ -30,6 +31,11 @@ const SSL_SERVER = https.createServer(
   app
 );
 
+//** SOCKET_SERVER **//
+const io = new Server(SSL_SERVER, {
+  cors: { origin: "*", methods: ["GET", "POST"] },
+});
+
 //** MIDDLEWARE **/
 app.use(bodyParser.json());
 app.use("/uploads", express.static(FILE_Directiry));
@@ -49,6 +55,22 @@ app.use("/submition", submitionRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from the back");
+});
+
+io.on("connection", (socket) => {
+  socket.emit("me", socket.id);
+
+  socket.on("disconnect", () => {
+    socket.broadcast.emit("callended");
+  });
+
+  socket.on("calluser", ({ userToCall, signalData, from, name }) => {
+    io.to(userToCall).emit("calluser", { signal: signalData, from, name });
+  });
+
+  socket.on("answercall", ({ to, signal }) => {
+    io.to(to).emit("callaccepted", signal);
+  });
 });
 
 SSL_SERVER.listen(process.env.PORT, () => {
