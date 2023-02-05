@@ -9,6 +9,7 @@ import WeeklyTasks from "../screens/WeeklyTasks";
 import ProtectedRoutes from "./ProtectedRoutes";
 import SideBar from "../components/SideBar";
 import TaskPreview from "../screens/TaskPreview";
+import InterView from "../screens/InterView";
 import StudentSubmitionList from "../screens/StudentSubmitions";
 
 export default function AllRoutes() {
@@ -32,10 +33,11 @@ export default function AllRoutes() {
           <Route path="/dashboard" element={<DashboardScreen />}></Route>
           <Route path="/company-list" element={<CompanyListScreen />}></Route>
           <Route path="/weekly-tasks" element={<WeeklyTasks />}></Route>
-          <Route path="/interview" element={<h1>interview</h1>}></Route>
+          <Route path="/interview" element={<InterView />}></Route>
           <Route path="/contact" element={<h1>contanct info</h1>}></Route>
           <Route path="/profile" element={<h1>profile</h1>}></Route>
           <Route path="/task-preview" element={<TaskPreview />}></Route>
+
           <Route
             path="/student-submitions"
             element={<StudentSubmitionList />}

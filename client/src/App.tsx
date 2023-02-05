@@ -2,6 +2,7 @@ import AllRoutes from "./routes/Routes";
 import { AuthProvider } from "./context/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { SocketProvider } from "./context/SocketContext";
 
 //#EFF5F5
 const customTheme = createTheme({
@@ -26,9 +27,11 @@ function App() {
     <>
       <Router>
         <AuthProvider>
-          <ThemeProvider theme={customTheme}>
-            <AllRoutes />
-          </ThemeProvider>
+          <SocketProvider>
+            <ThemeProvider theme={customTheme}>
+              <AllRoutes />
+            </ThemeProvider>
+          </SocketProvider>
         </AuthProvider>
       </Router>
     </>
