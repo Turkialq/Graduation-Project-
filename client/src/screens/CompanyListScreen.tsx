@@ -67,7 +67,7 @@ export default function CompanyListScreen() {
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = `https://localhost:8080/company/submit-company/?${params.toString()}`;
+    const url = `https://localhost:8080/student/submit-company/?${params.toString()}`;
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,
@@ -90,7 +90,7 @@ export default function CompanyListScreen() {
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "https://localhost:8080/company/get-company-list/";
+    const url = "https://localhost:8080/student/get-company-list/";
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,
@@ -110,7 +110,7 @@ export default function CompanyListScreen() {
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "https://localhost:8080/company/get-submition-lists/";
+    const url = "https://localhost:8080/student/get-submition-lists/";
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,

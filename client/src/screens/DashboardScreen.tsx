@@ -77,6 +77,27 @@ export default function DashboardScreen() {
       });
   };
 
+  const getUniversitySupervisorInformation = async () => {
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url =
+      "https://localhost:8080/university-supervisor/get-university-supervisor-dashboard-information";
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        console.log(res.data);
+      })
+      .catch((error: any) => {
+        alert(error);
+        console.log(error);
+      });
+  };
+
   const getCompanySupervisorInformation = async () => {
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
@@ -107,6 +128,9 @@ export default function DashboardScreen() {
     } else if (userRole === "companySupervisor") {
       url =
         "https://localhost:8080/notification/get-company-supervisor-notifications/";
+    } else {
+      url =
+        "https://localhost:8080/notification/get-student-supervisor-notifications/";
     }
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
@@ -117,10 +141,7 @@ export default function DashboardScreen() {
     };
     axios
       .get(url, { headers })
-      .then((res: any) => {
-        setIsLoading(false);
-        setNotifications(res.data);
-      })
+      .then((res: any) => {})
       .catch((error: any) => {
         alert(error);
         console.log(error);
@@ -131,7 +152,7 @@ export default function DashboardScreen() {
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "https://localhost:8080/company/get-submition-lists/";
+    const url = "https://localhost:8080/student/get-submition-lists/";
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,
@@ -178,6 +199,33 @@ export default function DashboardScreen() {
       });
   };
 
+  const getUniversitySupervisorStudents = async () => {
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url = "https://localhost:8080/submition/get-accpeted-student/";
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        console.log(res.data);
+        if (res.data.length > 0) {
+          setIsLoading(false);
+          setAcceptedStudent(
+            res.data.filter((object: any) => JSON.stringify(object) !== "{}")
+          );
+          console.log(acceptedStudent);
+        }
+      })
+      .catch((error: any) => {
+        alert(error);
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     if (userRole === "student") {
       getStudentInformation();
@@ -188,6 +236,10 @@ export default function DashboardScreen() {
       getCompanySupervisorInformation();
       getUserNotifications();
       getAccpetedStudent();
+    }
+    if (userRole === "uniSupervisor") {
+      getUniversitySupervisorInformation();
+      getUserNotifications();
     }
   }, [userRole]);
 

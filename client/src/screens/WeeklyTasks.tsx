@@ -20,7 +20,7 @@ export default function WeeklyTasks() {
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "https://localhost:8080/company/get-submition-lists/";
+    const url = "https://localhost:8080/student/get-submition-lists/";
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,
