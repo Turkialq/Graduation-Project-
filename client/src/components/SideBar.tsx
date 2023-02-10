@@ -84,8 +84,6 @@ export default function SideBar() {
         navigate("/student-submitions");
         break;
 
-      //student list
-
       default:
         break;
     }

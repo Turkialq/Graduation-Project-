@@ -203,7 +203,7 @@ export default function DashboardScreen() {
           gap="20px"
           sx={{ marginTop: 10 }}
         >
-          {/* ROW 1 */}
+          {/* USER INFO */}
 
           {userRole === "student" && (
             <Box
@@ -246,6 +246,7 @@ export default function DashboardScreen() {
               </Box>
             </Box>
           )}
+
           {userRole === "companySupervisor" && (
             <Box
               component="div"
@@ -280,6 +281,43 @@ export default function DashboardScreen() {
               </Box>
             </Box>
           )}
+
+          {userRole === "uniSupervisor" && (
+            <Box
+              component="div"
+              gridColumn="span 9"
+              gridRow="span 1"
+              display="flex"
+              justifyContent="flex-end"
+              sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
+            >
+              <Box padding={2} marginRight={12}>
+                <Skeleton variant="circular" width={80} height={80} />
+              </Box>
+              <Box width={"45%"} marginLeft={34}>
+                <Typography
+                  marginLeft={10}
+                  marginTop={2}
+                  color={"black"}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  اسم مسئول العمل: {userName}
+                </Typography>
+                <Typography
+                  marginLeft={10}
+                  marginTop={1}
+                  color={"black"}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  بيئة العمل : {companyName}
+                </Typography>
+              </Box>
+            </Box>
+          )}
+
+          {/* USER NOTIFICATIONS */}
           {userRole === "student" && (
             <Box
               component="div"
@@ -341,6 +379,69 @@ export default function DashboardScreen() {
               )}
             </Box>
           )}
+
+          {userRole === "uniSupervisor" && (
+            <Box
+              component="div"
+              gridColumn="span 3"
+              gridRow="span 3"
+              display="flex"
+              sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
+            >
+              <StatBox
+                icon={
+                  <NotificationsActiveIcon
+                    sx={{
+                      color: "black",
+                      fontSize: "26px",
+                      marginTop: 1,
+                      marginLeft: 26,
+                      marginBottom: 2,
+                    }}
+                  />
+                }
+              />
+              {loading ? (
+                <Box sx={{ width: 230, marginTop: 7 }}>
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton />
+                  <Skeleton animation="wave" />
+                  <Skeleton animation={false} />
+                </Box>
+              ) : (
+                <Grid marginTop={4} overflow="auto">
+                  <>
+                    {notifications.map((not) => {
+                      return (
+                        <ListItem
+                          sx={{ padding: 2, marginRight: -5 }}
+                          key={not.id}
+                          button
+                        >
+                          <ListItemText
+                            sx={{
+                              width: "50%",
+                              textAlign: "right",
+                            }}
+                            primary={`${not.title}`}
+                            secondary={`${not.subTitle}`}
+                          />
+                          <ListItemIcon sx={{ marginLeft: 2 }}>
+                            <RadioButtonCheckedIcon sx={{ color: "black" }} />
+                          </ListItemIcon>
+                        </ListItem>
+                      );
+                    })}
+                  </>
+                </Grid>
+              )}
+            </Box>
+          )}
+
           {userRole === "companySupervisor" && (
             <Box
               component="div"
@@ -403,7 +504,7 @@ export default function DashboardScreen() {
             </Box>
           )}
 
-          {/* ROW 2 */}
+          {/* USER DATAGRID INFO */}
           <Box
             component="div"
             gridColumn="span 9"
@@ -420,19 +521,6 @@ export default function DashboardScreen() {
               p="15px"
               sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
             >
-              {loading && (
-                <Box sx={{ width: "75%", marginTop: 10, marginLeft: 12 }}>
-                  <Skeleton />
-                  <Skeleton />
-                  <Skeleton />
-                  <Skeleton />
-                  <Skeleton />
-                  <Skeleton />
-                  <Skeleton animation="wave" />
-                  <Skeleton animation={false} />
-                </Box>
-              )}
-
               {userRole === "student" && (
                 <>
                   <Box sx={{ height: "33vh", width: "100%" }}>
@@ -452,6 +540,24 @@ export default function DashboardScreen() {
               )}
 
               {userRole === "companySupervisor" && (
+                <>
+                  <Box sx={{ height: "33vh", width: "100%", direction: "rtl" }}>
+                    <DataGrid
+                      autoPageSize
+                      columns={superVisorColums}
+                      rows={acceptedStudent}
+                      getRowId={(row) => row.id + 1}
+                      sx={{
+                        fontSize: 20,
+                        margin: 2,
+                        boxShadow: 3,
+                      }}
+                    />
+                  </Box>
+                </>
+              )}
+
+              {userRole === "uniSupervisor" && (
                 <>
                   <Box sx={{ height: "33vh", width: "100%", direction: "rtl" }}>
                     <DataGrid
