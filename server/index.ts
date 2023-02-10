@@ -15,7 +15,7 @@ import notificationRouter from "./routes/notification";
 import taskRouter from "./routes/taskRoutes";
 import supervisorRouter from "./routes/Supervisor";
 import submitionRouter from "./routes/companySubmitions";
-
+// console.log("dsd")
 //** CONFIG **/
 const app: Application = express();
 dotenv.config();
