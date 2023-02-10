@@ -8,14 +8,14 @@ import path from "path";
 import * as dotenv from "dotenv";
 import bodyParser from "body-parser";
 // Routes
-import companyRouter from "./routes/companyRoutes";
+import companyRouter from "./routes/StudentRoutes";
 import userRouter from "./routes/userAuth";
 import studentRouter from "./routes/studentSupervisor";
 import notificationRouter from "./routes/notification";
-import taskRouter from "./routes/taskRoutes";
-import supervisorRouter from "./routes/Supervisor";
+import taskRouter from "./routes/weeklyTaskRoutes";
+import supervisorRouter from "./routes/CompanySupervisor";
 import submitionRouter from "./routes/companySubmitions";
-// console.log("dsd")
+
 //** CONFIG **/
 const app: Application = express();
 dotenv.config();
