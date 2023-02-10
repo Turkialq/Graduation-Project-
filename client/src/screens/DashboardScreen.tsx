@@ -55,7 +55,7 @@ export default function DashboardScreen() {
   );
 
   const getStudentInformation = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url = "https://localhost:8080/student/student-dashboard-information";
@@ -78,7 +78,7 @@ export default function DashboardScreen() {
   };
 
   const getCompanySupervisorInformation = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url =
@@ -108,7 +108,7 @@ export default function DashboardScreen() {
       url =
         "https://localhost:8080/notification/get-company-supervisor-notifications/";
     }
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const headers = {
@@ -128,7 +128,7 @@ export default function DashboardScreen() {
   };
 
   const getStudentSubmitions = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url = "https://localhost:8080/company/get-submition-lists/";
@@ -152,7 +152,7 @@ export default function DashboardScreen() {
   };
 
   const getAccpetedStudent = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url = "https://localhost:8080/submition/get-accpeted-student/";

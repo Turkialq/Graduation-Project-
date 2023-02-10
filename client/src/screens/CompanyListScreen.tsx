@@ -64,7 +64,7 @@ export default function CompanyListScreen() {
   const handleCompanySubmition = async () => {
     const params = new URLSearchParams();
     params.set("companyName", selectedCompanyName);
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url = `https://localhost:8080/company/submit-company/?${params.toString()}`;
@@ -87,7 +87,7 @@ export default function CompanyListScreen() {
   };
 
   const getCompanyList = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url = "https://localhost:8080/company/get-company-list/";
@@ -107,7 +107,7 @@ export default function CompanyListScreen() {
   };
 
   const getstudentList = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url = "https://localhost:8080/company/get-submition-lists/";

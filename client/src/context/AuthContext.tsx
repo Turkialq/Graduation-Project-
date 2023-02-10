@@ -18,12 +18,12 @@ const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authToken, setAuthTokens] = useState<any>(() => {
-    localStorage.getItem("authToken") &&
-      JSON.stringify(localStorage.getItem("authToken") || "{}");
+    sessionStorage.getItem("authToken") &&
+      JSON.stringify(sessionStorage.getItem("authToken") || "{}");
   });
   const [user, setUser] = useState<any>(
-    localStorage.getItem("authToken") &&
-      JSON.parse(localStorage.getItem("authToken") || "{}")
+    sessionStorage.getItem("authToken") &&
+      JSON.parse(sessionStorage.getItem("authToken") || "{}")
   );
   const [userRole, setUserRole] = useState("" || null);
   const [loading, setLoading] = useState(true);
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     if (Location.pathname === "/" || Location.pathname === "/register") {
       return;
     } else {
-      const role = JSON.parse(localStorage.getItem("authToken")!)["role"];
+      const role = JSON.parse(sessionStorage.getItem("authToken")!)["role"];
       setUserRole(role);
     }
   });
@@ -211,7 +211,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const info = await response.json();
       setAuthTokens(info);
       setUser(JSON.stringify(info.access));
-      localStorage.setItem("authToken", JSON.stringify(info));
+      sessionStorage.setItem("authToken", JSON.stringify(info));
       navigate("/dashboard");
     } else {
       console.log("HEREO");
@@ -220,7 +220,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
   const logout = async () => {
     const url = "https://localhost:8080/user/logout";
-    const data = JSON.parse(localStorage.getItem("authToken")!)["refreshToken"];
+    const data = JSON.parse(sessionStorage.getItem("authToken")!)[
+      "refreshToken"
+    ];
     const realData = JSON.stringify(data);
 
     const response = await fetch(url, {
@@ -230,7 +232,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     if (response.status === 204) {
       setAuthTokens(null);
       setUser(null);
-      localStorage.removeItem("authToken");
+      sessionStorage.removeItem("authToken");
       navigate("/");
     } else {
       alert("Cant logout");
@@ -255,7 +257,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     if (response.status === 200) {
       setAuthTokens(info);
       setUser(JSON.stringify(info.access));
-      localStorage.setItem("authToken", JSON.stringify(info));
+      sessionStorage.setItem("authToken", JSON.stringify(info));
     } else {
       logout();
     }

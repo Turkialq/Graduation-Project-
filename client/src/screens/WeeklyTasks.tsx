@@ -17,7 +17,7 @@ export default function WeeklyTasks() {
   };
 
   const getTasks = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url = "https://localhost:8080/company/get-submition-lists/";

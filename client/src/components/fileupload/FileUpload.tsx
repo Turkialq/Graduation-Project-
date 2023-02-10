@@ -24,7 +24,7 @@ export default function FileUpload(props: any) {
   const onDrop = () => wrapperRef.current.classList.remove("dragover");
 
   const handleUploadClick = () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url = "https://localhost:8080/file/upload-task-file";

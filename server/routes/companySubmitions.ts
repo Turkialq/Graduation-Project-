@@ -32,29 +32,33 @@ router.get(
       });
 
       for (let i = 0; i < companies?.sumbmitions.length!; i++) {
-        const student = await prisma.student.findUnique({
-          where: {
-            id: companies?.sumbmitions[i].studentID,
-          },
-        });
+        if (companies?.sumbmitions[i].status === "تم ااقبول") {
+          // do nothing
+        } else {
+          const student = await prisma.student.findUnique({
+            where: {
+              id: companies?.sumbmitions[i].studentID,
+            },
+          });
 
-        const univeristy = await prisma.university.findUnique({
-          where: {
-            id: student?.universityId,
-          },
-        });
+          const univeristy = await prisma.university.findUnique({
+            where: {
+              id: student?.universityId,
+            },
+          });
 
-        const name = student?.firstName + " " + student?.lastName;
+          const name = student?.firstName + " " + student?.lastName;
 
-        result.push({
-          id: student?.id,
-          "البريد الاكتروني": student?.email,
-          الاهتمام: student?.interest,
-          الجامعة: univeristy?.name,
-          التخصص: student?.major,
-          "لمعدل التراكمي": student?.gpa,
-          "اسم المتقدم": name,
-        });
+          result.push({
+            id: student?.id,
+            "البريد الاكتروني": student?.email,
+            الاهتمام: student?.interest,
+            الجامعة: univeristy?.name,
+            التخصص: student?.major,
+            "لمعدل التراكمي": student?.gpa,
+            "اسم المتقدم": name,
+          });
+        }
       }
 
       res.send(result);

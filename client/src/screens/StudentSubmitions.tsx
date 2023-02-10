@@ -65,7 +65,7 @@ export default function StudentSubmitionList() {
   };
 
   const handleCompanySubmition = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url = `https://localhost:8080/submition/accept-student/`;
@@ -93,7 +93,7 @@ export default function StudentSubmitionList() {
   };
 
   const getstudentList = async () => {
-    const acessToken = JSON.parse(localStorage.getItem("authToken")!)[
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
     const url = "https://localhost:8080/submition/get-student-list-submitions/";
