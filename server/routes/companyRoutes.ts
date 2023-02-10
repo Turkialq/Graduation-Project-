@@ -62,8 +62,7 @@ router.get(
         res.send(null);
         return;
       }
-      // console.log(companies);
-      // console.log(submitions);
+
       const result = [];
 
       for (let i = 0; i < submitions.length; i++) {
@@ -79,7 +78,6 @@ router.get(
           }
         }
       }
-      // console.log(result);
 
       res.json(result);
     } catch (error) {
