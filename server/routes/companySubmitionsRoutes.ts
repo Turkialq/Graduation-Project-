@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { PrismaClient } from "@prisma/client";
-import { authenticateToken } from "./userAuth";
+import { authenticateToken } from "./userAuthRoutes";
 
 const prisma = new PrismaClient();
 const router: Router = express.Router();
@@ -194,9 +194,64 @@ router.post(
 );
 
 router.delete(
-  "/delete-student",
+  "/reject-student",
   authenticateToken,
-  async (req: Request, res: Response) => {}
+  async (req: Request, res: Response) => {
+    const { studentID } = req.body;
+    const { name, lastName } = req.body.user;
+
+    try {
+      const companySupervisorInfo = await prisma.companySupervisor.findFirst({
+        where: {
+          name: name,
+          lastName: lastName,
+        },
+      });
+
+      const student = await prisma.student.findUnique({
+        where: {
+          id: studentID,
+        },
+      });
+
+      const company = await prisma.company.findUnique({
+        where: {
+          id: companySupervisorInfo?.companyId,
+        },
+      });
+
+      await prisma.submissions.updateMany({
+        where: {
+          studentID: studentID,
+          companyID: companySupervisorInfo?.companyId,
+        },
+        data: { status: "تم الرفض" },
+      });
+
+      await prisma.studentNotification.create({
+        data: {
+          studentID: student?.id as any,
+          title: `تم الرفض على بيئة العمل`,
+          subTitle: `تم رفضك في ${company?.name}`,
+        },
+      });
+
+      await prisma.companySupervisorNotification.create({
+        data: {
+          companySupervisorId: companySupervisorInfo?.id as any,
+          studentID: studentID,
+          title: `تم الرفض على بيئة العمل` as any,
+          subTitle: `تم رفض الطالب ${student?.firstName}` as any,
+        },
+      });
+
+      console.log("student rejected");
+      res.send("ok");
+    } catch (error) {
+      res.sendStatus(500);
+      console.log(`Error in reject-student: ${error}`);
+    }
+  }
 );
 
 export default router;

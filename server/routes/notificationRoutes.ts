@@ -1,7 +1,7 @@
 // get notifications for users
 import express, { Request, Response, Router } from "express";
 import { PrismaClient } from "@prisma/client";
-import { authenticateToken } from "./userAuth";
+import { authenticateToken } from "./userAuthRoutes";
 
 const prisma = new PrismaClient();
 const router: Router = express.Router();
@@ -38,7 +38,27 @@ router.get(
   "/get-student-supervisor-notifications",
   authenticateToken,
   async (req: Request, res: Response) => {
-    res.json("OK");
+    const { firstName, lastName } = req.body.user;
+
+    try {
+      const studentSupervisor = await prisma.studentSupervisor.findFirst({
+        where: {
+          name: firstName,
+          lastName: lastName,
+        },
+      });
+
+      const notifications = await prisma.studentSupervisor.findMany({
+        where: {
+          id: studentSupervisor?.id,
+        },
+      });
+
+      res.json(notifications);
+    } catch (error) {
+      console.log(`error from student notification: ${error}`);
+      res.sendStatus(500);
+    }
   }
 );
 

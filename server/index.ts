@@ -8,13 +8,13 @@ import path from "path";
 import * as dotenv from "dotenv";
 import bodyParser from "body-parser";
 // Routes
-import companyRouter from "./routes/StudentRoutes";
-import userRouter from "./routes/userAuth";
-import studentRouter from "./routes/studentSupervisor";
-import notificationRouter from "./routes/notification";
+import studentRouter from "./routes/StudentRoutes";
+import userRouter from "./routes/userAuthRoutes";
+import notificationRouter from "./routes/notificationRoutes";
 import taskRouter from "./routes/weeklyTaskRoutes";
-import supervisorRouter from "./routes/CompanySupervisor";
-import submitionRouter from "./routes/companySubmitions";
+import companySupervisorRouter from "./routes/companySupervisorRoutes";
+import universitySupervisorRouter from "./routes/universitySupervisorRoutes";
+import submitionRouter from "./routes/companySubmitionsRoutes";
 
 //** CONFIG **/
 const app: Application = express();
@@ -48,10 +48,10 @@ app.use(
 
 app.use("/user", userRouter);
 app.use("/student", studentRouter);
-app.use("/company", companyRouter);
 app.use("/tasks", taskRouter);
 app.use("/notification", notificationRouter);
-app.use("/supervisor", supervisorRouter);
+app.use("/supervisor", companySupervisorRouter);
+app.use("/university-supervisor", universitySupervisorRouter);
 app.use("/submition", submitionRouter);
 
 app.get("/", (req: Request, res: Response) => {

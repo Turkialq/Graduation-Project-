@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { PrismaClient } from "@prisma/client";
-import { authenticateToken } from "./userAuth";
+import { authenticateToken } from "./userAuthRoutes";
 
 const prisma = new PrismaClient();
 const router: Router = express.Router();
