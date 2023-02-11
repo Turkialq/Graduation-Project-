@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import DashboardScreen from "../screens/DashboardScreen";
 import ErrorScreen from "../screens/ErrorScreen";
 import CompanyListScreen from "../screens/CompanyListScreen";
 import WeeklyTasks from "../screens/WeeklyTasks";
@@ -11,6 +10,9 @@ import SideBar from "../components/SideBar";
 import TaskPreview from "../screens/TaskPreview";
 import InterView from "../screens/InterView";
 import StudentSubmitionList from "../screens/StudentSubmitions";
+
+//lazy loading to increase preformance
+const DashboardScreen = lazy(() => import("../screens/DashboardScreen"));
 
 export default function AllRoutes() {
   const [showNavBar, setShowNavBar] = useState<boolean>();

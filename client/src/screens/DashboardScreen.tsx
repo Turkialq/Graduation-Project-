@@ -141,7 +141,10 @@ export default function DashboardScreen() {
     };
     axios
       .get(url, { headers })
-      .then((res: any) => {})
+      .then((res: any) => {
+        setIsLoading(false);
+        setNotifications(res.data);
+      })
       .catch((error: any) => {
         alert(error);
         console.log(error);
