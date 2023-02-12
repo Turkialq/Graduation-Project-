@@ -10,9 +10,10 @@ import SideBar from "../components/SideBar";
 import TaskPreview from "../screens/TaskPreview";
 import InterView from "../screens/InterView";
 import StudentSubmitionList from "../screens/StudentSubmitions";
+import DashboardScreen from "../screens/DashboardScreen";
 
 //lazy loading to increase preformance
-const DashboardScreen = lazy(() => import("../screens/DashboardScreen"));
+// const DashboardScreen = lazy(() => import("../screens/DashboardScreen"));
 
 export default function AllRoutes() {
   const [showNavBar, setShowNavBar] = useState<boolean>();

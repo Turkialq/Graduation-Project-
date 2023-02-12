@@ -34,28 +34,26 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   const Location = useLocation();
 
   useEffect(() => {
-    if (Location.pathname === "/interview") {
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((currentStream) => {
-          setStream(currentStream);
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((currentStream) => {
+        setStream(currentStream);
 
-          myVidoe.current.srcObject = currentStream;
-        });
-
-      socket.on("me", (id) => {
-        setCurrentUserID(id);
+        myVidoe.current.srcObject = currentStream;
       });
 
-      socket.on("calluser", ({ from, name: callerName, signal }) => {
-        setCall({
-          isReceivedCall: true,
-          from: from,
-          name: callerName,
-          signal: signal,
-        });
+    socket.on("me", (id) => {
+      setCurrentUserID(id);
+    });
+
+    socket.on("calluser", ({ from, name: callerName, signal }) => {
+      setCall({
+        isReceivedCall: true,
+        from: from,
+        name: callerName,
+        signal: signal,
       });
-    }
+    });
   }, []);
 
   function answerCall() {
