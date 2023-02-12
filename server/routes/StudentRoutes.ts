@@ -95,7 +95,7 @@ router.get(
       const companies = await prisma.company.findMany({
         where: {
           id: {
-            in: submitions.map((obj) => {
+            in: submitions.map((obj: any) => {
               return obj.companyID;
             }) as any,
           },

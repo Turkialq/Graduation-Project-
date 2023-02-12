@@ -1,14 +1,13 @@
-FROM node:18
-
-
-WORKDIR /usr/src/app
-
+#Base OS
+FROM node:16.13.2-alpine as builder
+#Copy json file with scripts
 
 COPY package*.json ./
-
+#First command to start with the container
 RUN yarn install
 
+#bundly the app
 COPY . .
 
-EXPOSE 8080
-CMD [ "node", "index.ts" ]
+#after pakages have been installed run this
+CMD [ "yarn", "dev" ]

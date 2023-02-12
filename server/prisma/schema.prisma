@@ -114,8 +114,9 @@ model Submissions {
 
 model WeeklyTasks {
   id                Int                @id @default(autoincrement())
-  filePath          String
-  grande            Int
+  assignmentPath    String
+  solutionPath      String
+  grade             Int
   Student           Student?
   StudentSupervisor StudentSupervisor?
 }
