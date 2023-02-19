@@ -38,7 +38,7 @@ const io = new Server(SSL_SERVER, {
 });
 
 //** MIDDLEWARE **/
-app.use(bodyParser.json());
+app.use(express.json());
 app.use("/uploads", express.static(FILE_Directiry));
 app.use(
   cors({
