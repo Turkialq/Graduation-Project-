@@ -23,13 +23,12 @@ export default function FileUpload(props: any) {
 
   const onDrop = () => wrapperRef.current.classList.remove("dragover");
 
-  const handleUploadClick = () => {
+  const handleUploadClick = async () => {
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "https://localhost:8080/file/upload-task-file";
+    const url = "https://localhost:8080/tasks/upload-student-task";
     const headers = {
-      "Content-Type": "multipart/form-data",
       authorization: "Bearer" + " " + acessToken,
     };
 
@@ -37,25 +36,26 @@ export default function FileUpload(props: any) {
       return;
     }
     const formData = new FormData();
-    formData.append("files", fileList);
-    axios
-      .post(url, formData, { headers })
-      .then((res: any) => {
-        alert("file submited");
-      })
-      .catch((error: any) => {
-        alert(error);
-        // console.log(error);
-      });
+    formData.append("file", fileList);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: formData,
+    });
+    if (response.status === 200) {
+      console.log("good");
+    } else {
+      alert("something went wrong");
+    }
   };
 
   const onFileDrop = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFile = e.target.files[0];
-      const updatedList = [...fileList, newFile];
-      setFileList(updatedList);
+      setFileList(newFile);
       setButton(false);
-      props.onFileChange(updatedList);
+      props.onFileChange(newFile);
     }
   };
 
@@ -80,34 +80,14 @@ export default function FileUpload(props: any) {
         </div>
         <input type="file" value="" onChange={onFileDrop} />
       </div>
-      {fileList.length > 0 ? (
+      {!button ? (
         <div className="drop-file-preview">
           <p
-            style={{ textAlign: "right" }}
+            style={{ textAlign: "right", fontSize: 20 }}
             className="drop-file-preview__title"
           >
-            الملفات الجاهزة لي الرفع
+            {fileList.name} : الملفات الجاهزة لي الرفع
           </p>
-          {fileList.map((item: any, index: any) => (
-            <div key={index} className="drop-file-preview__item">
-              <img
-                src={
-                  ImageConfig[item.type.split("/")[1]] || ImageConfig["default"]
-                }
-                alt=""
-              />
-              <div className="drop-file-preview__item__info">
-                <p>{item.name}</p>
-                <p>{item.size}B</p>
-              </div>
-              <span
-                className="drop-file-preview__item__del"
-                onClick={() => fileRemove(item)}
-              >
-                x
-              </span>
-            </div>
-          ))}
         </div>
       ) : null}
       <Button

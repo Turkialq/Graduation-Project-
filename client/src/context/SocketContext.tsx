@@ -34,13 +34,13 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   const Location = useLocation();
 
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((currentStream) => {
-        setStream(currentStream);
+    // navigator.mediaDevices
+    //   .getUserMedia({ video: true, audio: true })
+    //   .then((currentStream) => {
+    //     setStream(currentStream);
 
-        myVidoe.current.srcObject = currentStream;
-      });
+    //     myVidoe.current.srcObject = currentStream;
+    //   });
 
     socket.on("me", (id) => {
       setCurrentUserID(id);
