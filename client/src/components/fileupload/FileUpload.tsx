@@ -52,8 +52,20 @@ export default function FileUpload(props: any) {
     if (!fileList) {
       return;
     }
+
     const formData = new FormData();
+
+    const task = JSON.stringify({
+      task: props.task,
+      description: props.description,
+      studentLists: props.personName,
+      deadline: props.value,
+    });
+
     formData.append("file", fileList);
+    formData.append("task", task);
+
+    console.log(formData);
 
     const response = await fetch(url, {
       method: "POST",

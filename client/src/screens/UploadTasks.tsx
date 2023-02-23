@@ -24,9 +24,12 @@ import axios from "axios";
 
 export default function UploadTasks() {
   const [task, setTask] = useState("");
+
   const [personName, setPersonName] = useState<string[]>([]);
   const [description, setDescription] = useState("");
+
   const [listOfNames, setListOfNames] = useState([] as any);
+
   const [value, setValue] = useState<Dayjs | null>(
     dayjs("2023-02-18T21:11:54")
   );
@@ -80,120 +83,125 @@ export default function UploadTasks() {
 
   return (
     <>
-      <Container sx={{ display: "flex", justifyContent: "space-evenly" }}>
-        <Box
-          sx={{
-            marginTop: 13,
-            marginRight: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: "#D6E4E5",
-            borderRadius: 4,
-            boxshadow: 12,
-            padding: 3,
-            minHeight: 500,
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "#3C6255" }}>
-            <AssignmentIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            انشاء مهمة
-          </Typography>
-          <Box component="form" noValidate sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  dir="rtl"
-                  color="success"
-                  required
-                  fullWidth
-                  id="اسم المهمة"
-                  label="اسم المهمة"
-                  autoFocus
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    setTask(e.target.value);
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <Stack spacing={3}>
-                    <DateTimePicker
-                      label="موعد التسليم"
-                      value={value}
-                      onChange={handleChange}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </Stack>
-                </LocalizationProvider>
-              </Grid>
-
-              <FormControl
+      <Box
+        sx={{
+          marginTop: 5,
+          margin: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          backgroundColor: "#D6E4E5",
+          borderRadius: 4,
+          boxshadow: 12,
+          padding: 3,
+          width: "90%",
+          // minWidth: 900,
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "#3C6255" }}>
+          <AssignmentIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          انشاء مهمة
+        </Typography>
+        <Box component="form" noValidate sx={{ mt: 3 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                dir="rtl"
                 color="success"
-                sx={{ marginTop: 1, marginLeft: 2, width: "100%" }}
-              >
-                <InputLabel>الطلاب المحددين</InputLabel>
-                <Select
-                  color="success"
-                  multiple
-                  value={personName}
-                  onChange={handleSelectChange}
-                  input={<OutlinedInput label="الطلاب المحددين" />}
-                  renderValue={(selected) => selected.join(", ")}
-                >
-                  {listOfNames.map((name: string) => (
-                    <MenuItem key={name} value={name}>
-                      <Checkbox
-                        color="success"
-                        checked={personName.indexOf(name) > -1}
-                      />
-                      <ListItemText primary={name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
-              <Grid item xs={12}>
-                <TextField
-                  dir="rtl"
-                  color="success"
-                  fullWidth
-                  label="وصف المهمة"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    setDescription(e.target.value);
-                  }}
-                />
-              </Grid>
+                required
+                fullWidth
+                id="اسم المهمة"
+                label="اسم المهمة"
+                autoFocus
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  setTask(e.target.value);
+                }}
+              />
             </Grid>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{
-                width: "100%",
-                backgroundColor: "#3C6255",
-                marginTop: 2,
-                "&:hover": {
-                  backgroundColor: "#86C8BC",
-                },
-                fontSize: 20,
-              }}
-              onClick={(e: MouseEvent<HTMLElement>) => {
-                handleTaskUpload();
-              }}
+            <Grid item xs={12} sm={6}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Stack spacing={3}>
+                  <DateTimePicker
+                    label="موعد التسليم"
+                    value={value}
+                    onChange={handleChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Stack>
+              </LocalizationProvider>
+            </Grid>
+
+            <FormControl
+              color="success"
+              sx={{ marginTop: 1, marginLeft: 2, width: "100%" }}
             >
-              انشاء
-            </Button>
-          </Box>
+              <InputLabel>الطلاب المحددين</InputLabel>
+              <Select
+                color="success"
+                multiple
+                value={personName}
+                onChange={handleSelectChange}
+                input={<OutlinedInput label="الطلاب المحددين" />}
+                renderValue={(selected) => selected.join(", ")}
+              >
+                {listOfNames.map((name: string) => (
+                  <MenuItem key={name} value={name}>
+                    <Checkbox
+                      color="success"
+                      checked={personName.indexOf(name) > -1}
+                    />
+                    <ListItemText primary={name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <Grid item xs={12}>
+              <TextField
+                dir="rtl"
+                color="success"
+                fullWidth
+                label="وصف المهمة"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  setDescription(e.target.value);
+                }}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              width: "100%",
+              backgroundColor: "#3C6255",
+              marginTop: 2,
+              "&:hover": {
+                backgroundColor: "#86C8BC",
+              },
+              fontSize: 20,
+            }}
+            onClick={(e: MouseEvent<HTMLElement>) => {
+              handleTaskUpload();
+            }}
+          >
+            انشاء
+          </Button>
         </Box>
-        <div className="all" style={{ marginRight: 120 }}>
+        <div className="all">
           <div className="box">
             <h2 className="header">تحميل الملفات</h2>
-            <FileUpload onFileChange={(files: any) => console.log(files)} />
+            <FileUpload
+              task={task}
+              description={description}
+              personName={personName}
+              value={value}
+              onFileChange={(files: any) => console.log(files)}
+            />
           </div>
         </div>
-      </Container>
+      </Box>
     </>
   );
 }
