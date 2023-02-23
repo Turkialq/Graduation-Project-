@@ -111,13 +111,12 @@ router.get(
       }
 
       const result = [];
-
       for (let i = 0; i < submitions.length; i++) {
         for (let j = 0; j < submitions.length; j++) {
           if (submitions[i].companyID === companies[j].id) {
-            // console.log(submitions[i], companies[j]);
+            console.log(submitions[i], companies[j]);
             const temp = {
-              id: companies[j].id,
+              id: companies[j]?.id,
               "اسم المنشاة": companies[j].name,
               "حالة الطلب": submitions[i].status,
             };
@@ -125,11 +124,11 @@ router.get(
           }
         }
       }
-
+      console.log(result);
       res.json(result);
     } catch (error) {
       res.sendStatus(500);
-      // console.log(`ERROR IN SUBMITION LIST ${error}`);
+      console.log(`ERROR IN SUBMITION LIST ${error}`);
     }
   }
 );

@@ -159,6 +159,15 @@ router.post(
         },
       });
 
+      await prisma.student.update({
+        where: {
+          id: studentID,
+        },
+        data: {
+          companyId: company?.id,
+        },
+      });
+
       await prisma.submissions.updateMany({
         where: {
           studentID: studentID,
