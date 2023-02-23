@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, MouseEvent } from "react";
+import { useState, ChangeEvent, MouseEvent, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -20,25 +20,13 @@ import ListItemText from "@mui/material/ListItemText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import FileUpload from "../components/fileupload/FileUpload";
-
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
+import axios from "axios";
 
 export default function UploadTasks() {
   const [task, setTask] = useState("");
   const [personName, setPersonName] = useState<string[]>([]);
   const [description, setDescription] = useState("");
-
+  const [listOfNames, setListOfNames] = useState([] as any);
   const [value, setValue] = useState<Dayjs | null>(
     dayjs("2023-02-18T21:11:54")
   );
@@ -61,6 +49,35 @@ export default function UploadTasks() {
     console.log(task, personName, description, value);
   };
 
+  const getStudentNames = async () => {
+    const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
+      "acessToken"
+    ];
+    const url =
+      "https://localhost:8080/university-supervisor/get-university-supervisor-student-names/";
+    const headers = {
+      "Content-Type": "application/json",
+      authorization: "Bearer" + " " + acessToken,
+    };
+    axios
+      .get(url, { headers })
+      .then((res: any) => {
+        console.log(res.data);
+        var names = res.data.map(function (item: any) {
+          return item["firstName"];
+        });
+        setListOfNames(names);
+      })
+      .catch((error: any) => {
+        alert(error);
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getStudentNames();
+  }, []);
+
   return (
     <>
       <Container sx={{ display: "flex", justifyContent: "space-evenly" }}>
@@ -72,7 +89,8 @@ export default function UploadTasks() {
             flexDirection: "column",
             alignItems: "center",
             backgroundColor: "#D6E4E5",
-            borderRadius: 2,
+            borderRadius: 4,
+            boxshadow: 12,
             padding: 3,
             minHeight: 500,
           }}
@@ -116,16 +134,16 @@ export default function UploadTasks() {
                 color="success"
                 sx={{ marginTop: 1, marginLeft: 2, width: "100%" }}
               >
-                <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
+                <InputLabel>الطلاب المحددين</InputLabel>
                 <Select
                   color="success"
                   multiple
                   value={personName}
                   onChange={handleSelectChange}
-                  input={<OutlinedInput label="Tag" />}
+                  input={<OutlinedInput label="الطلاب المحددين" />}
                   renderValue={(selected) => selected.join(", ")}
                 >
-                  {names.map((name) => (
+                  {listOfNames.map((name: string) => (
                     <MenuItem key={name} value={name}>
                       <Checkbox
                         color="success"
