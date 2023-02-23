@@ -9,11 +9,11 @@ router.get(
   "/get-university-supervisor-student-names",
   authenticateToken,
   async (req: Request, res: Response) => {
-    const { firstName, lastName } = req.body.user;
+    const { name, lastName } = req.body.user;
     try {
       const uniSupervisor = await prisma.studentSupervisor.findFirst({
         where: {
-          name: firstName,
+          name: name,
           lastName: lastName,
         },
         select: {
@@ -42,11 +42,11 @@ router.get(
   "/get-university-supervisor-dashboard-information",
   authenticateToken,
   async (req: Request, res: Response) => {
-    const { firstName, lastName } = req.body.user;
+    const { name, lastName } = req.body.user;
     try {
       const uniSupervisor = await prisma.studentSupervisor.findFirst({
         where: {
-          name: firstName,
+          name: name,
           lastName: lastName,
         },
         select: {

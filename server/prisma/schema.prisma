@@ -37,7 +37,6 @@ model Student {
   weeklyStatusId                Int?                            @unique
   studentNotification           studentNotification[]
   companySupervisorNotification companySupervisorNotification[]
-  studentSupervisorNotification studentSupervisorNotification[]
 }
 
 model StudentSupervisor {
@@ -115,9 +114,11 @@ model Submissions {
 model WeeklyTasks {
   id                Int                @id @default(autoincrement())
   assignmentPath    String
-  solutionPath      String
-  grade             Int
+  deadline          DateTime
+  title             String
+  description       String
   Student           Student?
+  StudentTempId     Int
   StudentSupervisor StudentSupervisor?
 }
 
@@ -135,8 +136,6 @@ model studentSupervisorNotification {
   subTitle            String
   studentSupervisor   StudentSupervisor @relation(fields: [studentSupervisorId], references: [id])
   studentSupervisorId Int
-  student             Student           @relation(fields: [studentID], references: [id])
-  studentID           Int
 }
 
 model companySupervisorNotification {
