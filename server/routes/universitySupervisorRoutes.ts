@@ -6,6 +6,39 @@ const prisma = new PrismaClient();
 const router: Router = express.Router();
 
 router.get(
+  "/get-university-supervisor-student-names",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const { firstName, lastName } = req.body.user;
+    try {
+      const uniSupervisor = await prisma.studentSupervisor.findFirst({
+        where: {
+          name: firstName,
+          lastName: lastName,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      const studentNames = await prisma.student.findMany({
+        where: {
+          studentSupervisor: uniSupervisor?.id,
+        },
+        select: {
+          firstName: true,
+        },
+      });
+      console.log(studentNames);
+      res.json(studentNames);
+    } catch (error) {
+      res.sendStatus(500);
+      console.log(`Error in uni student names : ${error}`);
+    }
+  }
+);
+
+router.get(
   "/get-university-supervisor-dashboard-information",
   authenticateToken,
   async (req: Request, res: Response) => {
