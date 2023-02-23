@@ -10,20 +10,25 @@ import {
 } from "@mui/material";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import StatBox from "../components/StatBox";
-import Chart, { BarChart } from "../components/dashboard/chart";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { BarChart } from "../components/dashboard/chart";
+import { DataGrid } from "@mui/x-data-grid";
 import Skeleton from "@mui/material/Skeleton";
 import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
 import axios from "axios";
+import avtar from "../assets/avtartwo.png";
 import AuthContext from "../context/AuthContext";
 
 export default function DashboardScreen() {
   const [loading, setIsLoading] = useState(true);
+
   const [userName, setUserName] = useState("");
   const [userUniveristy, setUserUniversity] = useState("");
+  const [userMajor, setUserMajor] = useState("");
 
   const [studentGPA, setStudentGPA] = useState("");
   const [studentUniSupervisor, setStudentSupervisor] = useState("");
+
+  const [uniStudents, setUniStudents] = useState([{} as any]);
 
   const [companyList, setCompanyList] = useState([{} as any]);
   const [companyName, setCompanyName] = useState("");
@@ -50,6 +55,16 @@ export default function DashboardScreen() {
       { field: "التخصص", header: "status", width: 100 },
       { field: "الجامعة", header: "company", width: 140 },
       { field: "المعدل التراكمي", header: "لمعدل التراكمي", width: 140 },
+    ],
+    []
+  );
+
+  const uniSupervisorColums = useMemo(
+    () => [
+      { field: "id", header: "ID", width: 50 },
+      { field: "اسم الطالب", header: "اسم الطالب", width: 140 },
+      { field: "التخصص", header: "التخصص", width: 180 },
+      { field: "بيئة العمل", header: "بيئة العمل", width: 200 },
     ],
     []
   );
@@ -90,6 +105,9 @@ export default function DashboardScreen() {
     axios
       .get(url, { headers })
       .then((res: any) => {
+        setUserName(res.data.name + " " + res.data.lastName);
+        setUserUniversity(res.data.uniName);
+        setUserMajor(res.data.major);
         console.log(res.data);
       })
       .catch((error: any) => {
@@ -123,6 +141,7 @@ export default function DashboardScreen() {
 
   const getUserNotifications = async () => {
     var url = "";
+    // refactor use switch
     if (userRole === "student") {
       url = "https://localhost:8080/notification/get-student-notifications/";
     } else if (userRole === "companySupervisor") {
@@ -206,7 +225,8 @@ export default function DashboardScreen() {
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "https://localhost:8080/submition/get-accpeted-student/";
+    const url =
+      "https://localhost:8080/university-supervisor/get-university-supervisor-students/";
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,
@@ -217,7 +237,7 @@ export default function DashboardScreen() {
         console.log(res.data);
         if (res.data.length > 0) {
           setIsLoading(false);
-          setAcceptedStudent(
+          setUniStudents(
             res.data.filter((object: any) => JSON.stringify(object) !== "{}")
           );
           console.log(acceptedStudent);
@@ -242,13 +262,18 @@ export default function DashboardScreen() {
     }
     if (userRole === "uniSupervisor") {
       getUniversitySupervisorInformation();
+      getUniversitySupervisorStudents();
       getUserNotifications();
     }
   }, [userRole]);
 
   return (
     <>
-      <Box marginLeft={2} marginTop={10} sx={{ backgroundColor: "#EFF5F5" }}>
+      <Box
+        marginLeft={2}
+        marginTop={"30px"}
+        sx={{ backgroundColor: "#EFF5F5" }}
+      >
         {/* GRID & CHARTS */}
 
         <Box
@@ -256,7 +281,6 @@ export default function DashboardScreen() {
           gridTemplateColumns="repeat(15, 1fr)"
           gridAutoRows="150px"
           gap="20px"
-          sx={{ marginTop: 10 }}
         >
           {/* USER INFO */}
 
@@ -269,32 +293,43 @@ export default function DashboardScreen() {
               justifyContent="flex-end"
               sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
             >
-              <Box padding={2} marginRight={12}>
-                <Skeleton variant="circular" width={80} height={80} />
-              </Box>
+              <Box
+                component="img"
+                sx={{
+                  backGroundColor: "black",
+                  height: 120,
+                  width: 100,
+                  maxHeight: { xs: 233, md: 167 },
+                  maxWidth: { xs: 350, md: 250 },
+                  borderRadius: 4,
+                  marginRight: { md: "20px", lg: "120px", xl: "210px" },
+                }}
+                alt="The house from the offer."
+                src={avtar}
+              />
               <Box width={"45%"} marginLeft={34}>
                 <Typography
-                  marginLeft={15}
                   marginTop={2}
                   color={"black"}
                   variant="h5"
                   fontWeight="600"
+                  sx={{ marginLeft: { xl: 29, lg: 10 } }}
                 >
                   اسم الطالب: {userName}
                 </Typography>
                 <Typography
-                  marginLeft={15}
                   color={"black"}
                   variant="h5"
                   fontWeight="600"
+                  sx={{ marginLeft: { xl: 19, lg: 1 } }}
                 >
                   الجامعة : {userUniveristy}
                 </Typography>
                 <Typography
-                  marginLeft={22}
                   color={"black"}
                   variant="h5"
                   fontWeight="600"
+                  sx={{ marginLeft: { xl: 35, lg: 16 } }}
                 >
                   المعدل التراكمي: {studentGPA}
                 </Typography>
@@ -311,9 +346,20 @@ export default function DashboardScreen() {
               justifyContent="flex-end"
               sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
             >
-              <Box padding={2} marginRight={12}>
-                <Skeleton variant="circular" width={80} height={80} />
-              </Box>
+              <Box
+                component="img"
+                sx={{
+                  backGroundColor: "black",
+                  height: 120,
+                  width: 100,
+                  maxHeight: { xs: 233, md: 167 },
+                  maxWidth: { xs: 350, md: 250 },
+                  borderRadius: 4,
+                  marginRight: { md: "20px", lg: "120px", xl: "210px" },
+                }}
+                alt="The house from the offer."
+                src={avtar}
+              />
               <Box width={"45%"} marginLeft={34}>
                 <Typography
                   marginLeft={10}
@@ -346,27 +392,47 @@ export default function DashboardScreen() {
               justifyContent="flex-end"
               sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
             >
-              <Box padding={2} marginRight={12}>
-                <Skeleton variant="circular" width={80} height={80} />
-              </Box>
+              <Box
+                component="img"
+                sx={{
+                  backGroundColor: "black",
+                  height: 120,
+                  width: 100,
+                  maxHeight: { xs: 233, md: 167 },
+                  maxWidth: { xs: 350, md: 250 },
+                  borderRadius: 4,
+                  marginRight: { md: "20px", lg: "120px", xl: "210px" },
+                }}
+                alt="The house from the offer."
+                src={avtar}
+              />
               <Box width={"45%"} marginLeft={34}>
                 <Typography
-                  marginLeft={10}
                   marginTop={2}
                   color={"black"}
                   variant="h5"
                   fontWeight="600"
+                  sx={{ marginLeft: { xl: 22, lg: 7 } }}
                 >
-                  اسم مسئول العمل: {userName}
+                  اسم استاذ الجامعة : {userName}
                 </Typography>
                 <Typography
-                  marginLeft={10}
                   marginTop={1}
                   color={"black"}
                   variant="h5"
                   fontWeight="600"
+                  sx={{ marginLeft: { xl: 20, lg: 5 } }}
                 >
-                  بيئة العمل : {companyName}
+                  الجامعة : {userUniveristy}
+                </Typography>
+                <Typography
+                  marginTop={1}
+                  color={"black"}
+                  variant="h5"
+                  fontWeight="600"
+                  sx={{ marginLeft: { xl: 30, lg: 15 } }}
+                >
+                  التخصص : {userMajor}
                 </Typography>
               </Box>
             </Box>
@@ -573,7 +639,7 @@ export default function DashboardScreen() {
               justifyContent="space-between"
               alignItems="center"
               borderBottom={`2px${"#141b2d"}`}
-              p="15px"
+              p="2px"
               sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
             >
               {userRole === "student" && (
@@ -617,8 +683,8 @@ export default function DashboardScreen() {
                   <Box sx={{ height: "33vh", width: "100%", direction: "rtl" }}>
                     <DataGrid
                       autoPageSize
-                      columns={superVisorColums}
-                      rows={acceptedStudent}
+                      columns={uniSupervisorColums}
+                      rows={uniStudents}
                       getRowId={(row) => row.id + 1}
                       sx={{
                         fontSize: 20,
@@ -643,15 +709,6 @@ export default function DashboardScreen() {
             {/* <Chart /> */}
             <BarChart />
           </Box>
-          {/* <Box
-            component="div"
-            gridColumn="span 4"
-            gridRow="span 2"
-            p="5px"
-            sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
-          >
-            <BarChart />
-          </Box> */}
         </Box>
       </Box>
     </>

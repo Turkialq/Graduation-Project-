@@ -95,7 +95,7 @@ export default function SideBar() {
         <CssBaseline />
         <AppBar position="fixed" open={true}>
           <Toolbar sx={{ backgroundColor: "#3C6255" }}>
-            <Tooltip title="معلومات" sx={{ marginLeft: 35 }}>
+            <Tooltip title="معلومات">
               <IconButton onClick={handleOpenUserMenu}>
                 <AccountCircleIcon sx={{ color: "whitesmoke", fontSize: 30 }} />
               </IconButton>

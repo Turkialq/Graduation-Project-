@@ -1,12 +1,15 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { ImageConfig } from "./ImageConfig";
 import "/Users/turkialqahtani/Desktop/GP2/client/src/components/fileupload/drop-file-input.css";
 import axios from "axios";
 import { Button } from "@mui/material";
+import AuthContext from "../../context/AuthContext";
 
 export default function FileUpload(props: any) {
   const wrapperRef = useRef<any>(null);
+
+  const { userRole }: any = useContext(AuthContext);
 
   const [fileList, setFileList] = useState<any>([]);
   const [button, setButton] = useState(true);
@@ -23,11 +26,25 @@ export default function FileUpload(props: any) {
 
   const onDrop = () => wrapperRef.current.classList.remove("dragover");
 
+  // this function will upload the task file + information about it
   const handleUploadClick = async () => {
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "https://localhost:8080/tasks/upload-student-task";
+    var url = "";
+
+    switch (userRole) {
+      case "student":
+        url = "https://localhost:8080/tasks/upload-student-task";
+        break;
+
+      case "uniSupervisor":
+        url = "https://localhost:8080/tasks/create-student-task";
+        break;
+
+      default:
+        break;
+    }
     const headers = {
       authorization: "Bearer" + " " + acessToken,
     };
@@ -43,6 +60,7 @@ export default function FileUpload(props: any) {
       headers: headers,
       body: formData,
     });
+
     if (response.status === 200) {
       console.log("good");
     } else {

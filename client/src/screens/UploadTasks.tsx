@@ -1,0 +1,181 @@
+import { useState, ChangeEvent, MouseEvent } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import dayjs, { Dayjs } from "dayjs";
+import Stack from "@mui/material/Stack";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import ListItemText from "@mui/material/ListItemText";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
+import FileUpload from "../components/fileupload/FileUpload";
+
+const names = [
+  "Oliver Hansen",
+  "Van Henry",
+  "April Tucker",
+  "Ralph Hubbard",
+  "Omar Alexander",
+  "Carlos Abbott",
+  "Miriam Wagner",
+  "Bradley Wilkerson",
+  "Virginia Andrews",
+  "Kelly Snyder",
+];
+
+export default function UploadTasks() {
+  const [task, setTask] = useState("");
+  const [personName, setPersonName] = useState<string[]>([]);
+  const [description, setDescription] = useState("");
+
+  const [value, setValue] = useState<Dayjs | null>(
+    dayjs("2023-02-18T21:11:54")
+  );
+
+  const handleSelectChange = (event: SelectChangeEvent<typeof personName>) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  const handleChange = (newValue: Dayjs | null) => {
+    setValue(newValue);
+  };
+
+  const handleTaskUpload = () => {
+    console.log(task, personName, description, value);
+  };
+
+  return (
+    <>
+      <Container sx={{ display: "flex", justifyContent: "space-evenly" }}>
+        <Box
+          sx={{
+            marginTop: 13,
+            marginRight: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            backgroundColor: "#D6E4E5",
+            borderRadius: 2,
+            padding: 3,
+            minHeight: 500,
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "#3C6255" }}>
+            <AssignmentIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            انشاء مهمة
+          </Typography>
+          <Box component="form" noValidate sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  dir="rtl"
+                  color="success"
+                  required
+                  fullWidth
+                  id="اسم المهمة"
+                  label="اسم المهمة"
+                  autoFocus
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    setTask(e.target.value);
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Stack spacing={3}>
+                    <DateTimePicker
+                      label="موعد التسليم"
+                      value={value}
+                      onChange={handleChange}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </Stack>
+                </LocalizationProvider>
+              </Grid>
+
+              <FormControl
+                color="success"
+                sx={{ marginTop: 1, marginLeft: 2, width: "100%" }}
+              >
+                <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
+                <Select
+                  color="success"
+                  multiple
+                  value={personName}
+                  onChange={handleSelectChange}
+                  input={<OutlinedInput label="Tag" />}
+                  renderValue={(selected) => selected.join(", ")}
+                >
+                  {names.map((name) => (
+                    <MenuItem key={name} value={name}>
+                      <Checkbox
+                        color="success"
+                        checked={personName.indexOf(name) > -1}
+                      />
+                      <ListItemText primary={name} />
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <Grid item xs={12}>
+                <TextField
+                  dir="rtl"
+                  color="success"
+                  fullWidth
+                  label="وصف المهمة"
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    setDescription(e.target.value);
+                  }}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                width: "100%",
+                backgroundColor: "#3C6255",
+                marginTop: 2,
+                "&:hover": {
+                  backgroundColor: "#86C8BC",
+                },
+                fontSize: 20,
+              }}
+              onClick={(e: MouseEvent<HTMLElement>) => {
+                handleTaskUpload();
+              }}
+            >
+              انشاء
+            </Button>
+          </Box>
+        </Box>
+        <div className="all" style={{ marginRight: 120 }}>
+          <div className="box">
+            <h2 className="header">تحميل الملفات</h2>
+            <FileUpload onFileChange={(files: any) => console.log(files)} />
+          </div>
+        </div>
+      </Container>
+    </>
+  );
+}

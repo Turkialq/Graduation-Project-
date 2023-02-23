@@ -384,30 +384,6 @@ export default function Signup() {
                 sx={{ textAlign: "right" }}
                 onChange={handleIntrest}
               >
-                {/* {major === "تقنية المعلومات" && (
-                  <div>
-                    <MenuItem value={"امن المعلومات"}>امن المعلومات</MenuItem>
-                    <MenuItem value={"حوسبة السحابية"}>حوسبة السحابية</MenuItem>
-                    <MenuItem value={"الذكاء الاصطناعي"}>
-                      الذكاء الاصطناعي
-                    </MenuItem>
-                  </div>
-                )}
-                {major === "ادارة الاعمال" && (
-                  <div>
-                    <MenuItem value={"X1"}>X1eco</MenuItem>
-                    <MenuItem value={"X2"}>X2eco</MenuItem>
-                    <MenuItem value={"X3"}>X3eco</MenuItem>
-                  </div>
-                )}
-                {major === "قانون" && (
-                  <div>
-                    <MenuItem value={"X1"}>X1law</MenuItem>
-                    <MenuItem value={"X2"}>X2law</MenuItem>
-                    <MenuItem value={"X3"}>X3law</MenuItem>
-                  </div>
-                )} */}
-
                 <MenuItem value={"طب"}>طب</MenuItem>
                 <MenuItem value={"قانون"}>قانون</MenuItem>
                 <MenuItem value={"هندسة"}>هندسة</MenuItem>
@@ -445,7 +421,7 @@ export default function Signup() {
                 <MenuItem value={"جامعة الاميرة نوره"}>
                   جامعة الاميرة نوره
                 </MenuItem>
-                <MenuItem value={"تقنية المعلومات"}>جامعة ام القرى</MenuItem>
+                <MenuItem value={"جامعة ام القرى"}>جامعة ام القرى</MenuItem>
                 <MenuItem value={">جامعة الملك عبدالعزيز"}>
                   جامعة الملك عبدالعزيز
                 </MenuItem>
