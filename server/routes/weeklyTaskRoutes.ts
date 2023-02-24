@@ -17,11 +17,33 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+// get list of task for a specific student
 router.get(
   "/get-student-tasks",
   authenticateToken,
   async (req: Request, res: Response) => {
-    res.send("ok");
+    const { firstName, lastName } = req.body.user;
+    try {
+      const student = await prisma.student.findFirst({
+        where: {
+          firstName: firstName,
+          lastName: lastName,
+        },
+      });
+
+      const listOfTasks = await prisma.weeklyTasks.findMany({
+        where: {
+          StudentTempId: student?.id as any,
+        },
+      });
+
+      console.log(listOfTasks);
+
+      res.send("ok");
+    } catch (error) {
+      res.sendStatus(500);
+      console.log(`Error : ${error}`);
+    }
   }
 );
 

@@ -6,9 +6,9 @@ import { Server } from "socket.io";
 import fs from "fs";
 import path from "path";
 import * as dotenv from "dotenv";
-import bodyParser from "body-parser";
+
 // Routes
-import studentRouter from "./routes/StudentRoutes";
+import studentRouter from "./routes/studentRoutes";
 import userRouter from "./routes/userAuthRoutes";
 import notificationRouter from "./routes/notificationRoutes";
 import taskRouter from "./routes/weeklyTaskRoutes";
