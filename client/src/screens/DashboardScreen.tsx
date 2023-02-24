@@ -274,8 +274,6 @@ export default function DashboardScreen() {
         marginTop={"30px"}
         sx={{ backgroundColor: "#EFF5F5" }}
       >
-        {/* GRID & CHARTS */}
-
         <Box
           display="grid"
           gridTemplateColumns="repeat(15, 1fr)"
@@ -439,6 +437,7 @@ export default function DashboardScreen() {
           )}
 
           {/* USER NOTIFICATIONS */}
+
           {userRole === "student" && (
             <Box
               component="div"
@@ -516,7 +515,7 @@ export default function DashboardScreen() {
                       color: "black",
                       fontSize: "26px",
                       marginTop: 1,
-                      marginLeft: 26,
+                      marginLeft: { xl: 36, lg: 22 },
                       marginBottom: 2,
                     }}
                   />
@@ -539,7 +538,7 @@ export default function DashboardScreen() {
                     {notifications.map((not) => {
                       return (
                         <ListItem
-                          sx={{ padding: 2, marginRight: -5 }}
+                          sx={{ padding: 2, marginRight: 10 }}
                           key={not.id}
                           button
                         >
@@ -706,7 +705,6 @@ export default function DashboardScreen() {
             p="10px"
             sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
           >
-            {/* <Chart /> */}
             <BarChart />
           </Box>
         </Box>

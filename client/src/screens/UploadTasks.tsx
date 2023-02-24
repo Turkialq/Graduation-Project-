@@ -170,24 +170,6 @@ export default function UploadTasks() {
               />
             </Grid>
           </Grid>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{
-              width: "100%",
-              backgroundColor: "#3C6255",
-              marginTop: 2,
-              "&:hover": {
-                backgroundColor: "#86C8BC",
-              },
-              fontSize: 20,
-            }}
-            onClick={(e: MouseEvent<HTMLElement>) => {
-              handleTaskUpload();
-            }}
-          >
-            انشاء
-          </Button>
         </Box>
         <div className="all">
           <div className="box">

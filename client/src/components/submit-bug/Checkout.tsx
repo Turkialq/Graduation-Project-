@@ -1,5 +1,4 @@
 import * as React from "react";
-import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
@@ -13,7 +12,7 @@ import AddressForm from "./AddressForm";
 import PaymentForm from "./PaymentForm";
 import ReviewForm from "./ReviewForm";
 
-const steps = ["Shipping address", "Payment details", "Review your order"];
+const steps = ["معلومات الشخصية", "معلومات المهنية", "ابلاغ عن المشكلة"];
 
 function getStepContent(step: number) {
   switch (step) {
@@ -28,8 +27,6 @@ function getStepContent(step: number) {
   }
 }
 
-const theme = createTheme();
-
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -43,14 +40,18 @@ export default function Checkout() {
 
   return (
     <>
-      <CssBaseline />
       <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
         <Paper
           variant="outlined"
-          sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+          sx={{
+            my: { xs: 3, md: 6 },
+            p: { xs: 2, md: 3 },
+            backgroundColor: "#D6E4E5",
+            borderRadius: 2,
+          }}
         >
           <Typography component="h1" variant="h4" align="center">
-            Checkout
+            ابلاغ عن مشكلة
           </Typography>
           <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
             {steps.map((label) => (
@@ -75,16 +76,36 @@ export default function Checkout() {
               {getStepContent(activeStep)}
               <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                 {activeStep !== 0 && (
-                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                    Back
+                  <Button
+                    variant="contained"
+                    onClick={handleBack}
+                    sx={{
+                      mt: 3,
+                      ml: 1,
+                      backgroundColor: "#3C6255",
+                      "&:hover": {
+                        backgroundColor: "#86C8BC",
+                      },
+                      fontSize: 20,
+                    }}
+                  >
+                    الخلف
                   </Button>
                 )}
                 <Button
                   variant="contained"
                   onClick={handleNext}
-                  sx={{ mt: 3, ml: 1 }}
+                  sx={{
+                    mt: 3,
+                    ml: 1,
+                    backgroundColor: "#3C6255",
+                    "&:hover": {
+                      backgroundColor: "#86C8BC",
+                    },
+                    fontSize: 20,
+                  }}
                 >
-                  {activeStep === steps.length - 1 ? "Place order" : "Next"}
+                  {activeStep === steps.length - 1 ? "Place order" : "التقدم"}
                 </Button>
               </Box>
             </React.Fragment>
