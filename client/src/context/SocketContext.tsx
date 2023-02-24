@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect, useRef, ReactNode } from "react";
-import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import Peer from "simple-peer";
 
@@ -30,8 +29,6 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
   const myVidoe = useRef<any>();
   const userVidoe = useRef<any>();
   const connection = useRef<any>();
-
-  const Location = useLocation();
 
   useEffect(() => {
     // navigator.mediaDevices
