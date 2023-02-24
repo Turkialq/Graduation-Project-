@@ -42,7 +42,7 @@ app.use(express.json());
 app.use("/uploads", express.static(FILE_Directiry));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "*"],
   })
 );
 

@@ -37,9 +37,20 @@ router.get(
         },
       });
 
-      console.log(listOfTasks);
+      const result = listOfTasks.map((task) => {
+        const oldPath = task.assignmentPath;
+        const newPath = oldPath.split("file-uploads/")[1];
+        const today = task.deadline;
 
-      res.send("ok");
+        return {
+          ...task,
+          deadline: today.toISOString().substring(0, 10),
+          assignmentPath: newPath,
+        };
+      });
+
+      console.log(result);
+      res.json(result);
     } catch (error) {
       res.sendStatus(500);
       console.log(`Error : ${error}`);
