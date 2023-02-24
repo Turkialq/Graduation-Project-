@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Box, Skeleton, Typography, IconButton } from "@mui/material";
+import { createSearchParams, useNavigate } from "react-router-dom";
+import { Box, Skeleton, Typography, IconButton, Link } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import axios from "axios";
 import FileUpload from "../components/fileupload/FileUpload";
@@ -12,15 +12,16 @@ export default function WeeklyTasks() {
 
   const navigate = useNavigate();
 
-  const handleTaskClick = () => {
-    navigate("/task-preview");
+  const handleTaskClick = (path: string) => {
+    console.log(path);
+    navigate(`/task-preview/${path}`);
   };
 
   const getTasks = async () => {
     const acessToken = JSON.parse(sessionStorage.getItem("authToken")!)[
       "acessToken"
     ];
-    const url = "https://localhost:8080/student/get-submition-lists/";
+    const url = "https://localhost:8080/tasks/get-student-tasks/";
     const headers = {
       "Content-Type": "application/json",
       authorization: "Bearer" + " " + acessToken,
@@ -29,6 +30,7 @@ export default function WeeklyTasks() {
       .get(url, { headers })
       .then((res: any) => {
         console.log(res.data);
+        setListOfTasks(res.data);
       })
       .catch((error: any) => {
         alert(error);
@@ -41,178 +43,97 @@ export default function WeeklyTasks() {
   }, []);
 
   return (
-    <Box marginLeft={2} marginTop={10} sx={{ backgroundColor: "#EFF5F5" }}>
+    <Box marginLeft={2} sx={{ backgroundColor: "#EFF5F5" }}>
       <Box
         display="grid"
         gridTemplateColumns="repeat(15, 1fr)"
-        gridAutoRows="150px"
+        gridAutoRows="300px"
         gap="20px"
-        sx={{ marginTop: 10 }}
+        sx={{ marginTop: 5 }}
       >
-        <Box
-          component="div"
-          gridColumn="span 12"
-          gridRow="span 1"
-          sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
-        >
-          <>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              padding={2}
-            >
-              <Typography marginTop={1} fontSize={30}>
-                الواجب الاول
-              </Typography>
-
-              <IconButton
-                onClick={() => {
-                  handleTaskClick();
-                }}
+        {listOfTasks.length > 0 &&
+          listOfTasks.map((task, index) => {
+            console.log(task);
+            return (
+              <Box
+                component="div"
+                gridColumn="span 12"
+                gridRow="span 1"
+                sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
               >
-                <UploadFileIcon sx={{ fontSize: 55 }} />
-              </IconButton>
-            </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              padding={1}
-              sx={{ marginRight: 2 }}
-            >
-              <Typography fontSize={20}> تاريخ التسليم : ٢٠٢٣/٢/٤</Typography>
-            </Box>
-          </>
-        </Box>
-        <Box
-          component="div"
-          gridColumn="span 12"
-          gridRow="span 1"
-          sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
-        >
-          <>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              padding={2}
-            >
-              <Typography marginTop={1} fontSize={30}>
-                الواجب الاول
-              </Typography>
+                <>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                    padding={2}
+                  >
+                    <Typography marginTop={1} fontSize={30}>
+                      المهمة رقم : {index + 1}
+                    </Typography>
 
-              <IconButton>
-                <UploadFileIcon sx={{ fontSize: 55 }} />
-              </IconButton>
-            </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              padding={1}
-              sx={{ marginRight: 2 }}
-            >
-              <Typography fontSize={20}> تاريخ التسليم : ٢٠٢٣/٢/٤</Typography>
-            </Box>
-          </>
-        </Box>
-        <Box
-          component="div"
-          gridColumn="span 12"
-          gridRow="span 1"
-          sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
-        >
-          <>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              padding={2}
-            >
-              <Typography marginTop={1} fontSize={30}>
-                الواجب الاول
-              </Typography>
+                    <IconButton
+                      onClick={() => {
+                        handleTaskClick(task.assignmentPath);
+                      }}
+                    >
+                      <UploadFileIcon sx={{ fontSize: 55 }} />
+                    </IconButton>
+                  </Box>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                    padding={1}
+                    sx={{ marginRight: 2 }}
+                  >
+                    <Typography fontSize={20}>
+                      {task.title} : العنوان
+                    </Typography>
+                  </Box>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                    padding={1}
+                    sx={{ marginRight: 2 }}
+                  >
+                    <Typography fontSize={20}>
+                      {task.description} : الوصف
+                    </Typography>
+                  </Box>
 
-              <IconButton>
-                <UploadFileIcon sx={{ fontSize: 55 }} />
-              </IconButton>
-            </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              padding={1}
-              sx={{ marginRight: 2 }}
-            >
-              <Typography fontSize={20}> تاريخ التسليم : ٢٠٢٣/٢/٤</Typography>
-            </Box>
-          </>
-        </Box>
-        <Box
-          component="div"
-          gridColumn="span 12"
-          gridRow="span 1"
-          sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
-        >
-          <>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              padding={2}
-            >
-              <Typography marginTop={1} fontSize={30}>
-                الواجب الاول
-              </Typography>
-
-              <IconButton>
-                <UploadFileIcon sx={{ fontSize: 55 }} />
-              </IconButton>
-            </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              padding={1}
-              sx={{ marginRight: 2 }}
-            >
-              <Typography fontSize={20}> تاريخ التسليم : ٢٠٢٣/٢/٤</Typography>
-            </Box>
-          </>
-        </Box>
-        <Box
-          component="div"
-          gridColumn="span 12"
-          gridRow="span 1"
-          sx={{ backgroundColor: "#D6E4E5", borderRadius: 2 }}
-        >
-          <>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              padding={2}
-            >
-              <Typography marginTop={1} fontSize={30}>
-                الواجب الاول
-              </Typography>
-
-              <IconButton>
-                <UploadFileIcon sx={{ fontSize: 55 }} />
-              </IconButton>
-            </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="flex-end"
-              padding={1}
-              sx={{ marginRight: 2 }}
-            >
-              <Typography fontSize={20}> تاريخ التسليم : ٢٠٢٣/٢/٤</Typography>
-            </Box>
-          </>
-        </Box>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="flex-end"
+                    padding={1}
+                    sx={{ marginRight: 2 }}
+                  >
+                    <Typography fontSize={20}>
+                      تاريخ التسليم : {task.deadline}
+                    </Typography>
+                  </Box>
+                </>
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="flex-end"
+                  padding={1}
+                  sx={{ marginRight: 2 }}
+                >
+                  <Link
+                    target="_blank"
+                    href={`https://localhost:8080/uploads/${task.assignmentPath}`}
+                    variant="body2"
+                    sx={{ color: "#6ECCAF", marginLeft: 50 }}
+                  >
+                    {"ليس لديك حساب في المنصة؟"}
+                  </Link>
+                </Box>
+              </Box>
+            );
+          })}
       </Box>
     </Box>
   );

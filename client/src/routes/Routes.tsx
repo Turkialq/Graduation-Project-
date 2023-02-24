@@ -41,7 +41,7 @@ export default function AllRoutes() {
           <Route path="/interview" element={<InterView />}></Route>
           <Route path="/contact" element={<SubmitBug />}></Route>
           <Route path="/profile" element={<h1>profile</h1>}></Route>
-          <Route path="/task-preview" element={<TaskPreview />}></Route>
+          <Route path="/task-preview/:path" element={<TaskPreview />}></Route>
           <Route path="/create-task" element={<UploadTasks />}></Route>
 
           <Route
