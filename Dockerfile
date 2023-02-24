@@ -1,8 +1,10 @@
 #Base OS
 FROM node:16.13.2-alpine as builder
-#Copy json file with scripts
 
-COPY package*.json ./
+#New path for the container
+WORKDIR /usr/app
+#Copy json file with scripts
+COPY ./package.json ./
 #First command to start with the container
 RUN yarn install
 

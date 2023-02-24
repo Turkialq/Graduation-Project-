@@ -38,21 +38,24 @@ router.get(
   "/get-student-supervisor-notifications",
   authenticateToken,
   async (req: Request, res: Response) => {
-    const { firstName, lastName } = req.body.user;
+    const { name, lastName } = req.body.user;
 
     try {
       const studentSupervisor = await prisma.studentSupervisor.findFirst({
         where: {
-          name: firstName,
+          name: name,
           lastName: lastName,
         },
       });
+      console.log(studentSupervisor?.id);
 
-      const notifications = await prisma.studentSupervisor.findMany({
-        where: {
-          id: studentSupervisor?.id,
-        },
-      });
+      const notifications = await prisma.studentSupervisorNotification.findMany(
+        {
+          where: {
+            studentSupervisorId: studentSupervisor?.id,
+          },
+        }
+      );
 
       res.json(notifications);
     } catch (error) {
